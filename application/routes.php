@@ -107,5 +107,17 @@ Route::filter('csrf', function()
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to('login');
+    if(isset($_SERVER['REMOTE_USER'])) {
+        $user = User::where_crsid($_SERVER['REMOTE_USER'])->first();
+        if($user) {
+            Auth::login($user->id);
+            if($user->isAuthorised()) {
+                return;
+            }
+        }
+
+        return Response::error('403'); // Failed login
+    } else {
+    	if (Auth::guest()) return Redirect::to('login');
+    }
 });
