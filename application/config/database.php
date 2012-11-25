@@ -70,9 +70,9 @@ return array(
 		'mysql' => array(
 			'driver'   => 'mysql',
 			'host'     => 'localhost',
-			'database' => 'database',
-			'username' => 'root',
-			'password' => '',
+			'database' => 'pnyx',
+			'username' => 'pnyx',
+			'password' => 'anthem-hill-zebra-rapunzel',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 		),
