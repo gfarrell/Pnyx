@@ -29,7 +29,7 @@ return array(
 	|
 	*/
 
-	'username' => 'email',
+	'username' => 'crsid',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -42,7 +42,8 @@ return array(
 	|
 	*/
 
-	'password' => 'password',
+	// BUT we are using Raven (and mod_ucam_webauth) so no need for this
+	// 'password' => 'password',
 
 	/*
 	|--------------------------------------------------------------------------
