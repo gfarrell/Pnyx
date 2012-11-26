@@ -17,8 +17,9 @@
 */
 
 define(['jquery', 'bootstrap/typeahead'], function() {
-    var delimiter = new Array();
-    var tags_callbacks = new Array();
+    var delimiter = [],
+        tags_callbacks = [];
+
     $.fn.doAutosize = function(o){
         var minWidth = $(this).data('minwidth'),
             maxWidth = $(this).data('maxwidth'),
@@ -35,8 +36,7 @@ define(['jquery', 'bootstrap/typeahead'], function() {
         var testerWidth = testSubject.width(),
             newWidth = (testerWidth + o.comfortZone) >= minWidth ? testerWidth + o.comfortZone : minWidth,
             currentWidth = input.width(),
-            isValidWidthChange = (newWidth < currentWidth && newWidth >= minWidth)
-                                 || (newWidth > minWidth && newWidth < maxWidth);
+            isValidWidthChange = (newWidth < currentWidth && newWidth >= minWidth) || (newWidth > minWidth && newWidth < maxWidth);
     
         // Animate width
         if (isValidWidthChange) {
@@ -63,7 +63,7 @@ define(['jquery', 'bootstrap/typeahead'], function() {
             whiteSpace: 'nowrap'
         }),
         testerId = $(this).attr('id')+'_autosize_tester';
-    if(! $('#'+testerId).length > 0){
+    if($('#'+testerId).length <= 0){
       testSubject.attr('id', testerId);
       testSubject.appendTo('body');
     }
@@ -80,23 +80,23 @@ define(['jquery', 'bootstrap/typeahead'], function() {
                 var id = $(this).attr('id');
 
                 var tagslist = $(this).val().split(delimiter[id]);
-                if (tagslist[0] == '') { 
-                    tagslist = new Array();
+                if (tagslist[0] === '') { 
+                    tagslist = [];
                 }
 
                 value = jQuery.trim(value);
+
+                var skipTag = false;
         
                 if (options.unique) {
-                    var skipTag = $(this).tagExist(value);
-                    if(skipTag == true) {
+                    skipTag = $(this).tagExist(value);
+                    if(skipTag === true) {
                         //Marks fake input as not_valid to let styling it
                         $('#'+id+'_tag').addClass('not_valid');
                     }
-                } else {
-                    var skipTag = false; 
                 }
                 
-                if (value !='' && skipTag != true) { 
+                if (value !== '' && skipTag !== true) { 
                     $('<span>').addClass('tag').append(
                         $('<span>').text(value).append('&nbsp;&nbsp;'),
                         $('<a>', {
@@ -118,16 +118,14 @@ define(['jquery', 'bootstrap/typeahead'], function() {
                     }
                     
                     $.fn.tagsInput.updateTagsField(this,tagslist);
-                    
-                    if (options.callback && tags_callbacks[id] && tags_callbacks[id]['onAddTag']) {
-                        var f = tags_callbacks[id]['onAddTag'];
-                        f.call(this, value);
+
+                    if (options.callback && tags_callbacks[id] && tags_callbacks[id].onAddTag) {
+                        tags_callbacks[id].onAddTag.call(this, value);
                     }
-                    if(tags_callbacks[id] && tags_callbacks[id]['onChange'])
+                    if(tags_callbacks[id] && tags_callbacks[id].onChange)
                     {
                         var i = tagslist.length;
-                        var f = tags_callbacks[id]['onChange'];
-                        f.call(this, $(this), tagslist[i-1]);
+                        tags_callbacks[id].onChange.call(this, $(this), tagslist[i-1]);
                     }                   
                 }
         
@@ -153,8 +151,8 @@ define(['jquery', 'bootstrap/typeahead'], function() {
                 
                 $.fn.tagsInput.importTags(this,str);
 
-                if (tags_callbacks[id] && tags_callbacks[id]['onRemoveTag']) {
-                    var f = tags_callbacks[id]['onRemoveTag'];
+                if (tags_callbacks[id] && tags_callbacks[id].onRemoveTag) {
+                    var f = tags_callbacks[id].onRemoveTag;
                     f.call(this, value);
                 }
             });
@@ -173,7 +171,7 @@ define(['jquery', 'bootstrap/typeahead'], function() {
                 id = $(this).attr('id');
         $('#'+id+'_tagsinput .tag').remove();
         $.fn.tagsInput.importTags(this,str);
-    }
+    };
         
     $.fn.tagsInput = function(options) { 
     var settings = jQuery.extend({
@@ -213,10 +211,10 @@ define(['jquery', 'bootstrap/typeahead'], function() {
             delimiter[id] = data.delimiter;
             
             if (settings.onAddTag || settings.onRemoveTag || settings.onChange) {
-                tags_callbacks[id] = new Array();
-                tags_callbacks[id]['onAddTag'] = settings.onAddTag;
-                tags_callbacks[id]['onRemoveTag'] = settings.onRemoveTag;
-                tags_callbacks[id]['onChange'] = settings.onChange;
+                tags_callbacks[id]             = [];
+                tags_callbacks[id].onAddTag    = settings.onAddTag;
+                tags_callbacks[id].onRemoveTag = settings.onRemoveTag;
+                tags_callbacks[id].onChange    = settings.onChange;
             }
     
             var markup = '<div id="'+id+'_tagsinput" class="tagsinput"><div id="'+id+'_addTag">';
@@ -233,7 +231,7 @@ define(['jquery', 'bootstrap/typeahead'], function() {
             $(data.holder).css('min-height',settings.height);
             $(data.holder).css('height','100%');
     
-            if ($(data.real_input).val()!='') { 
+            if ($(data.real_input).val() !== '') { 
                 $.fn.tagsInput.importTags($(data.real_input),$(data.real_input).val());
             }       
             if (settings.interactive) { 
@@ -252,9 +250,9 @@ define(['jquery', 'bootstrap/typeahead'], function() {
                     $(event.data.fake_input).css('color','#000000');        
                 });
                         
-                if (settings.autocomplete_url != undefined) {
+                if (settings.autocomplete_url !== undefined) {
                     autocomplete_options = {source: settings.autocomplete_url};
-                    for (attrname in settings.autocomplete) { 
+                    for (var attrname in settings.autocomplete) { 
                         autocomplete_options[attrname] = settings.autocomplete[attrname]; 
                     }
                 
@@ -279,7 +277,7 @@ define(['jquery', 'bootstrap/typeahead'], function() {
                         // this is only available if autocomplete is not used.
                         $(data.fake_input).bind('blur',data,function(event) { 
                             var d = $(this).attr('data-default');
-                            if ($(event.data.fake_input).val()!='' && $(event.data.fake_input).val()!=d) { 
+                            if ($(event.data.fake_input).val() !== '' && $(event.data.fake_input).val()!=d) { 
                                 if( (event.data.minChars <= $(event.data.fake_input).val().length) && (!event.data.maxChars || (event.data.maxChars >= $(event.data.fake_input).val().length)) )
                                     $(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:true,unique:(settings.unique)});
                             } else {
@@ -304,9 +302,8 @@ define(['jquery', 'bootstrap/typeahead'], function() {
                     }
                 });
                 //Delete last tag on backspace
-                data.removeWithBackspace && $(data.fake_input).bind('keydown', function(event)
-                {
-                    if(event.keyCode == 8 && $(this).val() == '')
+                data.removeWithBackspace && $(data.fake_input).bind('keydown', function(event) {
+                    if(event.keyCode == 8 && $(this).val() === '')
                     {
                          event.preventDefault();
                          var last_tag = $(this).closest('.tagsinput').find('.tag:last').text();
@@ -345,9 +342,9 @@ define(['jquery', 'bootstrap/typeahead'], function() {
         for (i=0; i<tags.length; i++) { 
             $(obj).addTag(tags[i],{focus:false,callback:false});
         }
-        if(tags_callbacks[id] && tags_callbacks[id]['onChange'])
+        if(tags_callbacks[id] && tags_callbacks[id].onChange)
         {
-            var f = tags_callbacks[id]['onChange'];
+            var f = tags_callbacks[id].onChange;
             f.call(obj, obj, tags[i]);
         }
     };
