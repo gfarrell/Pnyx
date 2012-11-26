@@ -11,7 +11,7 @@
         <link rel="stylesheet" language="text/css" href="/css/main.css" />
         
         <!-- Require.js -->
-        <script language="javascript" src="/javascript/Lib/Require/require.js"></script>
+        <script language="javascript" src="/js/lib/require/require.js"></script>
     </head>
     <body>
         <!--[if lt IE 7]>
