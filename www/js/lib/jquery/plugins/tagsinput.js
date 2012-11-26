@@ -12,10 +12,11 @@
 
     ben@xoxco.com
 
+    AMD'd and adapted for Twitter Bootstrap by Gideon Farrell <me@gideonfarrell.co.uk>
+
 */
 
-(function($) {
-
+define(['jquery', 'bootstrap/typeahead'], function() {
     var delimiter = new Array();
     var tags_callbacks = new Array();
     $.fn.doAutosize = function(o){
@@ -350,5 +351,4 @@
             f.call(obj, obj, tags[i]);
         }
     };
-
-})(jQuery);
+});
