@@ -22,7 +22,14 @@
         @render('partials.navbar')
 
         <!-- Main Content -->
-        @yield('content')
+        <div class="container">
+            @yield('content')
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <?php Anbu::render(); // Debugger ?>
+        </div>
 
         <!-- Run main.js -->
         <script language="javascript" type="text/javascript" src="/js/main.js"></script>
