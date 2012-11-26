@@ -193,6 +193,9 @@ return array(
 		'URI'        	=> 'Laravel\\URI',
 		'Validator'  	=> 'Laravel\\Validator',
 		'View'       	=> 'Laravel\\View',
+
+		// Vendor aliases
+		'Formly'		=>	'Flare\\Formly'
 	),
 
 );
