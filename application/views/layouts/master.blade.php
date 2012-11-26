@@ -33,5 +33,8 @@
 
         <!-- Run main.js -->
         <script language="javascript" type="text/javascript" src="/js/main.js"></script>
+
+        <!-- Run custom scripts -->
+        @yield('scripts');
     </body>
 </html>
