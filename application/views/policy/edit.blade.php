@@ -116,5 +116,15 @@
         <button class="btn btn-danger" type="reset">Cancel</button>
     </div>
     <?php echo $form->close(); ?>
-    
+<?php Section::stop(); ?>
+
+<?php Section::start('scripts'); ?>
+<script language="javascript" type="text/javascript">
+    require(['lib/jquery/plugins/tagsinput'], function() {
+        $('#field_tags').tagsInput({
+            autocomplete_url: '/tags/all.json?q={query}',
+            autocomplete: {property: 'name'}
+        });
+    });
+</script>
 <?php Section::stop(); ?>
