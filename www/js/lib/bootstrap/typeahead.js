@@ -82,6 +82,10 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
 
       this.query = this.$element.val();
 
+      if(this.query === '') {
+        return this.shown ? this.hide() : this;
+      }
+
       if (typeof this.source == "function") {
         value = this.source(this, this.query);
         if (value) this.process(value);
@@ -101,7 +105,7 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
       if (!this.query) {
         return this.shown ? this.hide() : this;
       }
-      
+
       if(autocompleted === undefined || autocompleted === false) {
         items = $.grep(results, function (item) {
           if (!that.strings)
