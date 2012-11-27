@@ -2,11 +2,14 @@
 
 <?php
     $edit = isset($policy);
+    $title = ($edit ? 'Edit ' : 'New ') . ' Policy Document';
+
+    Section::append('page_title', $title);
 ?>
 
 
 <?php Section::start('content'); ?>
-    <h1><?php echo ($edit ? 'Edit ' : 'New '); ?>Policy Document</h1>
+    <h1><?php echo $title; ?></h1>
     
     <?php
         $form = Formly::make(array('display-inline-errors'=>true));
