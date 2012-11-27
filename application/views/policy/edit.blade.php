@@ -77,7 +77,7 @@
         
         <div class="span4 muted">
             <p>
-                Here we record the details of the vote. If numbers were taken, please enter the numbers into the <strong>For</strong>, <strong>Against</strong> and <strong>Abstain</strong> boxes on the right. If only majority/minority votes were recorded, then use a <strong>capital M</strong> for a <em>majority</em>, and a <strong>lower case m</strong> for a <em>minority</em>.
+                Here we record the details of the vote. If numbers were taken, please enter the numbers into the <strong>For</strong>, <strong>Against</strong> and <strong>Abstain</strong> boxes on the right. If only majority/minority votes were recorded, then use <strong>the letter m</strong> <em>majority</em> (case insensitive).
             </p>
         </div>
         <div class="span8">
