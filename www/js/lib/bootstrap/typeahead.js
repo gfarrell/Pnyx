@@ -90,7 +90,7 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
       }
     },
 
-    process: function (results) {
+    process: function (results, autocompleted) {
       var that = this, items, q;
 
       if (results.length && typeof results[0] != "string")
@@ -101,12 +101,16 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
       if (!this.query) {
         return this.shown ? this.hide() : this;
       }
-
-      items = $.grep(results, function (item) {
-        if (!that.strings)
-          item = item[that.options.property];
-        if (that.matcher(item)) return item;
-      });
+      
+      if(autocompleted === undefined || autocompleted === false) {
+        items = $.grep(results, function (item) {
+          if (!that.strings)
+            item = item[that.options.property];
+          if (that.matcher(item)) return item;
+        });
+      } else {
+        items = results;
+      }
 
       items = this.sorter(items);
 
