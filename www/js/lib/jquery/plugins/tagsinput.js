@@ -262,7 +262,7 @@ define(['jquery', 'bootstrap/typeahead'], function() {
                                 $.ajax({
                                     url: settings.autocomplete_url.replace('{query}', query),
                                     success: function(data) {
-                                        typeahead.process(data);
+                                        typeahead.process(data, true);
                                     }
                                 });
                             },
