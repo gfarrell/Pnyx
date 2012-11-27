@@ -255,23 +255,20 @@ define(['jquery', 'bootstrap/typeahead'], function() {
                     for (var attrname in settings.autocomplete) { 
                         autocomplete_options[attrname] = settings.autocomplete[attrname]; 
                     }
-                
-                    if (jQuery.Autocompleter !== undefined) {
-                        $(data.fake_input).autocomplete(settings.autocomplete_url, settings.autocomplete);
-                        $(data.fake_input).bind('result',data,function(event,data,formatted) {
-                            if (data) {
-                                $('#'+id).addTag(data[0] + "",{focus:true,unique:(settings.unique)});
-                            }
-                        });
-                    } else if (jQuery.ui.autocomplete !== undefined) {
-                        $(data.fake_input).autocomplete(autocomplete_options);
-                        $(data.fake_input).bind('autocompleteselect',data,function(event,ui) {
-                            $(event.data.real_input).addTag(ui.item.value,{focus:true,unique:(settings.unique)});
-                            return false;
+
+                    if(jQuery().typeahead) { // Bootstrap's typeahead plugin is installed
+                        $(data.fake_input).typeahead({
+                            source: function(typeahead, query) {
+                                $.ajax({
+                                    url: settings.autocomplete_url.replace('{query}', query),
+                                    success: function(data) {
+                                        typeahead.process(data);
+                                    }
+                                });
+                            },
+                            property: autocomplete_options.property
                         });
                     }
-                
-                    
                 } else {
                         // if a user tabs out of the field, create a new tag
                         // this is only available if autocomplete is not used.
