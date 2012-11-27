@@ -122,7 +122,7 @@
 <script language="javascript" type="text/javascript">
     require(['lib/jquery/plugins/tagsinput'], function() {
         $('#field_tags').tagsInput({
-            autocomplete_url: '/tags/all.json?q={query}',
+            autocomplete_url: '/tags.json/{query}',
             autocomplete: {property: 'name'}
         });
     });
