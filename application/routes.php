@@ -38,6 +38,11 @@ Route::get('/', function()
 });
 
 Route::controller('policy');
+Route::get('/tags.json/(:any)', function($query) {
+    $query = Input::get('q');
+    $tags = Tag::where('name', 'LIKE', '%'.$query.'%')->take(10)->get();
+    return Response::eloquent($tags); // Return JSON'd model
+});
 
 /*
 |--------------------------------------------------------------------------
