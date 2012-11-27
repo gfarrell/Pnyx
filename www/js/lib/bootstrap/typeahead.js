@@ -1,6 +1,6 @@
 define([ 'jquery', './transition' ], function ( jQuery ) {
 /* =============================================================
- * bootstrap-typeahead.js v2.1.0
+ * bootstrap-typeahead.js v2.0.0
  * http://twitter.github.com/bootstrap/javascript.html#typeahead
  * =============================================================
  * Copyright 2012 Twitter, Inc.
@@ -18,42 +18,43 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
  * limitations under the License.
  * ============================================================ */
 
+ // Modified version: https://gist.github.com/1866577
 
-!function($){
+!function( $ ){
 
-  "use strict"; // jshint ;_;
+  "use strict";
 
-
- /* TYPEAHEAD PUBLIC CLASS DEFINITION
-  * ================================= */
-
-  var Typeahead = function (element, options) {
-    this.$element = $(element)
-    this.options = $.extend({}, $.fn.typeahead.defaults, options)
-    this.matcher = this.options.matcher || this.matcher
-    this.sorter = this.options.sorter || this.sorter
-    this.highlighter = this.options.highlighter || this.highlighter
-    this.updater = this.options.updater || this.updater
-    this.$menu = $(this.options.menu).appendTo('body')
-    this.source = this.options.source
-    this.shown = false
-    this.listen()
-  }
+  var Typeahead = function ( element, options ) {
+    this.$element = $(element);
+    this.options = $.extend({}, $.fn.typeahead.defaults, options);
+    this.matcher = this.options.matcher || this.matcher;
+    this.sorter = this.options.sorter || this.sorter;
+    this.highlighter = this.options.highlighter || this.highlighter;
+    this.$menu = $(this.options.menu).appendTo('body');
+    this.source = this.options.source;
+    this.onselect = this.options.onselect;
+    this.strings = true;
+    this.shown = false;
+    this.listen();
+  };
 
   Typeahead.prototype = {
 
     constructor: Typeahead
 
   , select: function () {
-      var val = this.$menu.find('.active').attr('data-value')
-      this.$element
-        .val(this.updater(val))
-        .change()
-      return this.hide()
-    }
+      var val = JSON.parse(this.$menu.find('.active').attr('data-value'))
+        , text
 
-  , updater: function (item) {
-      return item
+      if (!this.strings) text = val[this.options.property]
+      else text = val
+
+      this.$element.val(text)
+
+      if (typeof this.onselect == "function")
+          this.onselect(val)
+
+      return this.hide()
     }
 
   , show: function () {
@@ -78,24 +79,39 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
     }
 
   , lookup: function (event) {
-      var items
+      var that = this
+        , items
+        , q
+        , value
 
       this.query = this.$element.val()
 
-      if (!this.query || this.query.length < this.options.minLength) {
+      if (typeof this.source == "function") {
+        value = this.source(this, this.query)
+        if (value) this.process(value)
+      } else {
+        this.process(this.source)
+      }
+    }
+
+  , process: function (results) {
+      var that = this
+        , items
+        , q
+
+      if (results.length && typeof results[0] != "string")
+          this.strings = false
+
+      this.query = this.$element.val()
+
+      if (!this.query) {
         return this.shown ? this.hide() : this
       }
 
-      items = $.isFunction(this.source) ? this.source(this.query, $.proxy(this.process, this)) : this.source
-
-      return items ? this.process(items) : this
-    }
-
-  , process: function (items) {
-      var that = this
-
-      items = $.grep(items, function (item) {
-        return that.matcher(item)
+      items = $.grep(results, function (item) {
+        if (!that.strings)
+          item = item[that.options.property]
+        if (that.matcher(item)) return item
       })
 
       items = this.sorter(items)
@@ -116,10 +132,14 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
         , caseSensitive = []
         , caseInsensitive = []
         , item
+        , sortby
 
       while (item = items.shift()) {
-        if (!item.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(item)
-        else if (~item.indexOf(this.query)) caseSensitive.push(item)
+        if (this.strings) sortby = item
+        else sortby = item[this.options.property]
+
+        if (!sortby.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(item)
+        else if (~sortby.indexOf(this.query)) caseSensitive.push(item)
         else caseInsensitive.push(item)
       }
 
@@ -127,8 +147,7 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
     }
 
   , highlighter: function (item) {
-      var query = this.query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
-      return item.replace(new RegExp('(' + query + ')', 'ig'), function ($1, match) {
+      return item.replace(new RegExp('(' + this.query + ')', 'ig'), function ($1, match) {
         return '<strong>' + match + '</strong>'
       })
     }
@@ -137,7 +156,9 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
       var that = this
 
       items = $(items).map(function (i, item) {
-        i = $(that.options.item).attr('data-value', item)
+        i = $(that.options.item).attr('data-value', JSON.stringify(item))
+        if (!that.strings)
+            item = item[that.options.property]
         i.find('a').html(that.highlighter(item))
         return i[0]
       })
@@ -176,7 +197,7 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
         .on('keyup',    $.proxy(this.keyup, this))
 
       if ($.browser.webkit || $.browser.msie) {
-        this.$element.on('keydown', $.proxy(this.keydown, this))
+        this.$element.on('keydown', $.proxy(this.keypress, this))
       }
 
       this.$menu
@@ -184,7 +205,33 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
         .on('mouseenter', 'li', $.proxy(this.mouseenter, this))
     }
 
-  , move: function (e) {
+  , keyup: function (e) {
+      e.stopPropagation()
+      e.preventDefault()
+
+      switch(e.keyCode) {
+        case 40: // down arrow
+        case 38: // up arrow
+          break
+
+        case 9: // tab
+        case 13: // enter
+          if (!this.shown) return
+          this.select()
+          break
+
+        case 27: // escape
+          this.hide()
+          break
+
+        default:
+          this.lookup()
+      }
+
+  }
+
+  , keypress: function (e) {
+      e.stopPropagation()
       if (!this.shown) return
 
       switch(e.keyCode) {
@@ -204,47 +251,12 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
           this.next()
           break
       }
-
-      e.stopPropagation()
     }
-
-  , keydown: function (e) {
-      this.suppressKeyPressRepeat = !~$.inArray(e.keyCode, [40,38,9,13,27])
-      this.move(e)
-    }
-
-  , keypress: function (e) {
-      if (this.suppressKeyPressRepeat) return
-      this.move(e)
-    }
-
-  , keyup: function (e) {
-      switch(e.keyCode) {
-        case 40: // down arrow
-        case 38: // up arrow
-          break
-
-        case 9: // tab
-        case 13: // enter
-          if (!this.shown) return
-          this.select()
-          break
-
-        case 27: // escape
-          if (!this.shown) return
-          this.hide()
-          break
-
-        default:
-          this.lookup()
-      }
-
-      e.stopPropagation()
-      e.preventDefault()
-  }
 
   , blur: function (e) {
       var that = this
+      e.stopPropagation()
+      e.preventDefault()
       setTimeout(function () { that.hide() }, 150)
     }
 
@@ -265,7 +277,7 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
   /* TYPEAHEAD PLUGIN DEFINITION
    * =========================== */
 
-  $.fn.typeahead = function (option) {
+  $.fn.typeahead = function ( option ) {
     return this.each(function () {
       var $this = $(this)
         , data = $this.data('typeahead')
@@ -280,13 +292,14 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
   , items: 8
   , menu: '<ul class="typeahead dropdown-menu"></ul>'
   , item: '<li><a href="#"></a></li>'
-  , minLength: 1
+  , onselect: null
+  , property: 'value'
   }
 
   $.fn.typeahead.Constructor = Typeahead
 
 
- /*   TYPEAHEAD DATA-API
+ /* TYPEAHEAD DATA-API
   * ================== */
 
   $(function () {
@@ -298,6 +311,5 @@ define([ 'jquery', './transition' ], function ( jQuery ) {
     })
   })
 
-}(window.jQuery);
-
+}( window.jQuery );
 });
