@@ -265,6 +265,7 @@ define(['jquery', 'bootstrap/typeahead'], function() {
                                         typeahead.process(data, true);
                                     }
                                 });
+                                return false; // Must return false to stop process being called automatically
                             },
                             property: autocomplete_options.property
                         });
