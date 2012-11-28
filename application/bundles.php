@@ -43,6 +43,6 @@ return array(
                 'Flare\\Formly' => '(:bundle)/formly.php',
             ),
         ),
-    )
-
+    ),
+    'sparkdown'
 );
