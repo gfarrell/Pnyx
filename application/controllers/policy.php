@@ -13,6 +13,13 @@ class Policy_Controller extends Base_Controller {
         return Request::ajax() ? Response::eloquent($policies) : View::make('policy.index')->with(array('policies'=>$policies));
     }
 
+    public function get_view($id=null) {
+        $policy = Policy::find($id);
+        if($policy) return Response::error(404);
+
+        return Request::ajax() ? Response::eloquent($policy) : View::make('policy.view')->with(array('policy'=>$policy));
+    }
+
     public function get_add() {
         return View::make('policy.edit');
     }
