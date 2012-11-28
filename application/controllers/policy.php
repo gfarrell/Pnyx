@@ -15,7 +15,7 @@ class Policy_Controller extends Base_Controller {
 
     public function get_view($id=null) {
         $policy = Policy::find($id);
-        if($policy) return Response::error(404);
+        if(!$policy) return Response::error(404);
 
         return Request::ajax() ? Response::eloquent($policy) : View::make('policy.view')->with(array('policy'=>$policy));
     }
