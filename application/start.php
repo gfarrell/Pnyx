@@ -171,3 +171,16 @@ if ( ! Request::cli() and Config::get('session.driver') !== '')
 {
 	Session::load();
 }
+
+/*
+|--------------------------------------------------------------------------
+| Disable default timestamps for Eloquent models
+|--------------------------------------------------------------------------
+|
+| Unfortunately $timestamps = true is the default now for
+| Eloquent. Here we're going to turn it off.
+|
+*/
+
+\Laravel\Database\Eloquent\Pivot::$timestamps = false;
+\Laravel\Database\Eloquent\Model::$timestamps = false;
