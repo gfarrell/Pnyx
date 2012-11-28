@@ -23,8 +23,12 @@ class Policy_Controller extends Base_Controller {
     public function get_add() {
         return View::make('policy.edit');
     }
-    public function get_edit($id) {
+    public function get_edit($id=null) {
         $policy = Policy::find($id);
+
+        if(is_null($id) || is_null($policy)) {
+            return Redirect::to('policy/add');
+        }
 
         return View::make('policy.edit')
                 ->with(array(
