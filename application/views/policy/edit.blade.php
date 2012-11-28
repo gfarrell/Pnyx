@@ -34,8 +34,8 @@
             <?php
                 echo $form->text('title', 'Title');
                 echo $form->text('date', 'Date', null, array('placeholder'=>'dd-mm-yyyy'));
-                echo $form->text('proposer', 'Proposed By');
-                echo $form->text('seconder', 'Seconded By');
+                echo $form->text('proposed', 'Proposed By');
+                echo $form->text('seconded', 'Seconded By');
             ?>
         </div>
     </fieldset>
