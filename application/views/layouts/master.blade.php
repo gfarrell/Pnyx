@@ -35,6 +35,6 @@
         <script language="javascript" type="text/javascript" src="/js/main.js"></script>
 
         <!-- Run custom scripts -->
-        @yield('scripts');
+        @yield('scripts')
     </body>
 </html>
