@@ -39,6 +39,7 @@ class Policy_Controller extends Base_Controller {
         $id = Policy::makeFromArray(Input::all());
         return Redirect::to('policy/view/'.$id);
     }
+    public function put_edit() {}
 
     public function delete_delete() {}
 }
