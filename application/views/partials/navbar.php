@@ -6,7 +6,7 @@
             <li><a href="/motion_creator" title="Create a motion">Create Motion</a></li>
             
             <?php if(Auth::check() && Auth::user()->isAdmin()): ?>
-            <li><a href="/policies/add" title="Add a Policy">Add Policy</a></li>
+            <li><a href="/policy/add" title="Add a Policy">Add Policy</a></li>
             <li><a href="/admin" title="Administrative Controls">Administration</a></li>
             <?php endif; ?>
         </ul>
