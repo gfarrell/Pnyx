@@ -22,4 +22,27 @@ Seconded by: {{ $policy->seconded }}</p>
 
 {{ Sparkdown\Markdown($policy->resolves) }}
 
+<h3>Vote Breakdown</h3>
+
+<?php
+    $vote_map = array('votes_for'=>'for the motion', 'votes_against'=>'against the motion', 'votes_abstain'=>'abstained');
+    $vote = '';
+
+    foreach($vote_map as $key => $text) {
+        if(strtolower($policy->$key) == 'm') {
+            $vote .= ' a majority ' . $text . ', ';
+            $vote_int = 0;
+            $majority = $key;
+        } elseif($policy->$key != '') {
+            $vote .= ' ' . $policy->$key . ' ' . $text . ', ';
+            $vote_int = intval($policy->$key);
+        } else {
+            $vote_int = 0;
+        }
+    }
+    $vote = substr_replace($vote, '', -2); // Remove the final commas
+?>
+
+The vote, taken on {{ date('l, jS F, Y', strtotime($policy->date)) }}, was: {{ $vote }}. <strong>The motion {{ $policy->didPass() ? 'passed' : 'failed' }}</strong>.
+
 <?php Section::stop(); ?>
