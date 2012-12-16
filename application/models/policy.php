@@ -87,6 +87,15 @@ class Policy extends mBase {
         return ($majority == 'votes_for');
     }
 
+    public function isCurrent() {
+        $now  = time();
+        $then = strtotime($this->date);
+
+        $duration = Config::get('pnyx.policy_lifetime');
+
+        return ($now - $then > $duration);
+    }
+
     public function votes($what) {
         $votes = array('for', 'against', 'abstain');
         $result = 'uncounted';
