@@ -73,5 +73,22 @@ class Policy extends mBase {
 
         return ($majority == 'votes_for');
     }
+
+    public function votes($what) {
+        $votes = array('for', 'against', 'abstain');
+        $result = 'uncounted';
+
+        if(in_array($what, $votes)) {
+            $what = 'votes_' . $what;
+            $vote = $this->$what;
+            if(strtolower($vote) == 'm') {
+                $result = 'majority';
+            }
+        } else {
+            throw new Exception('Invalid vote type "' . $what . '".');
+        }
+
+        return $result;
+    }
 }
 ?>
