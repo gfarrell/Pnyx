@@ -21,6 +21,21 @@
         <!-- Navbar -->
         @render('partials.navbar')
 
+        <!-- Alerts -->
+        <?php
+            $alerts = array(
+                'error'     => Session::get('alert_error'),
+                'info'      => Session::get('alert_info'),
+                'success'   => Session::get('alert_success')
+            );
+
+            foreach($alerts as $type => $alert) {
+                if(!is_null($alert)) {
+                    echo render('partials.alert', array('type'=>$type, 'message'=>$alert));
+                }
+            }
+        ?>
+
         <!-- Main Content -->
         <div class="container">
             @yield('content')
