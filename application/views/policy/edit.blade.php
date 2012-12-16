@@ -113,7 +113,7 @@
         </div>
         <div class="span8">
             <?php
-                echo $form->text('tags', 'Tags (comma separated)', null, array('class'=>'input-block-level'));
+                echo $form->text('raw_tags', 'Tags (comma separated)', ($edit ? $policy->tags_raw() : null), array('class'=>'input-block-level'));
                 echo $form->checkbox('review_flag', 'Flag for Review');
             ?>
         </div>
@@ -129,7 +129,7 @@
 <?php Section::start('scripts'); ?>
 <script language="javascript" type="text/javascript">
     require(['lib/jquery/plugins/tagsinput'], function() {
-        $('#field_tags').tagsInput({
+        $('#field_raw_tags').tagsInput({
             autocomplete_url: '/tags.json/{query}',
             autocomplete: {property: 'name'}
         });
