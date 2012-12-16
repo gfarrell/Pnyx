@@ -8,7 +8,7 @@ class Policy_Controller extends Base_Controller {
     }
 
     public function get_index() {
-        $policies = Policy::order('date', 'DESC')->paginate(25, array('title','date','votes_for','votes_against','votes_abstain'))->get();
+        $policies = Policy::order_by('date', 'DESC')->paginate(25, array('title','date','votes_for','votes_against','votes_abstain'));
 
         return Request::ajax() ? Response::eloquent($policies) : View::make('policy.index')->with(array('policies'=>$policies));
     }
