@@ -30,16 +30,44 @@ class Policy_Controller extends Base_Controller {
             return Redirect::to('policy/add');
         }
 
+        Input::replace($policy->attributes);
+
         return View::make('policy.edit')
                 ->with(array(
                     'policy' => $policy
                 ));
     }
+
+    /**
+     * POST add
+     * Processes a new motion.
+     * 
+     */
     public function post_add() {
         $id = Policy::makeFromArray(Input::all());
         return Redirect::to('policy/view/'.$id);
     }
-    public function put_edit() {}
+
+    /**
+     * PUT edit
+     * Saves changes to a motion.
+     * 
+     */
+    public function put_edit() {
+        $id = Input::get('id');
+        $policy = Policy::find($id);
+
+        if(is_null($id) || is_null($policy)) {
+            return Redirect::to('policy/add')->with('alert_error', 'No such Policy document exists with id '.$id.'. You can create one below.')->with_input();
+        }
+
+        $data = Policy::cleanData(Input::all());
+        Policy::update($id, $data);
+
+        $policy->saveTags(explode(',',Input::get('raw_tags')));
+
+        return Redirect::to('policy/edit/'.$id);
+    }
 
     public function delete_delete() {}
 }
