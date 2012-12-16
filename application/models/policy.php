@@ -2,35 +2,48 @@
 class Policy extends mBase {
     public static $timestamps = false;
 
-    public static function makeFromArray($data) {
+    public static function cleanData($data) {
         $direct_fields = array('title','date','notes','believes','resolves','votes_for','votes_against','votes_abstain','review_flag');
 
-        $data_extract = Set::get($data, $direct_fields);
+        $data = Set::get($data, $direct_fields);
 
         // Fix any date problems
-        $data_extract['date'] = date('Y-m-d', strtotime($data_extract['date']));
+        $data['date'] = date('Y-m-d', strtotime($data['date']));
 
         // Deal with prop / sec
         $people = Set::get($data, array('proposed','seconded'));
         foreach($people as $type => $p) {
-            $u = User::lookup($p);
-            $data_extract[$type] = is_null($u) ? $p : $u['name'];
+            if(User::validateCrsid($p)) {   // Only lookup if it is a CRSID
+                $u = User::lookup($p);
+                $data[$type] = is_null($u) ? $p : $u['name'];
+            }
         }
+
+        return $data;
+    }
+
+    public static function makeFromArray($data) {
+        // Get clean data
+        $data_extract = Policy::cleanData($data);
 
         // Save data fields
         $policy = Policy::create($data_extract);
 
+        // Process tags
+        $policy->saveTags(explode(',', $data['raw_tags']));
+
+        return $policy->id;
+    }
+
+    public function saveTags($tags) {
         // Deal with tags
         // First create all non-existent tags
-        $tags = explode(',', $data['tags']);
         Tag::createNonexistent($tags);
         // Now get all the tags specified
         $spec_tags = Tag::where_in('name', $tags)->get('id');
         $tag_ids = array_map(function($t) { return $t->id; }, $spec_tags);
         // Sync!
-        $policy->tags()->sync($tag_ids);
-
-        return $policy->id;
+        $this->tags()->sync($tag_ids);
     }
 
     public function tags() {
