@@ -5,7 +5,9 @@
 ?>
 
 <?php Section::start('content'); Bundle::start('sparkdown'); ?>
-<h1>{{ $policy->title }}</h1>
+<h1>
+    {{ $policy->title }} <small>{{ $policy->date }}</small>
+</h1>
 
 <p>Proposed by: {{ $policy->proposed }}<br/>
 Seconded by: {{ $policy->seconded }}</p>
