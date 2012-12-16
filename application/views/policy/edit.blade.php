@@ -88,11 +88,11 @@
         <div class="span8">
             <div class="controls  input-append input-prepend">
                 <span class="add-on"><i class="icon-thumbs-up"></i></span><!--
-                --><?php echo Form::text('votes_for', null, array('size'=>'3', 'class'=>'input-mini', 'placeholder'=>'FOR')); ?><!--
+                --><?php echo Form::text('votes_for', ($edit ? $policy->votes_for : null), array('size'=>'3', 'class'=>'input-mini', 'placeholder'=>'FOR')); ?><!--
                 --><span class="add-on"><i class="icon-thumbs-down"></i></span><!--
-                --><?php echo Form::text('votes_against', null, array('size'=>'3', 'class'=>'input-mini', 'placeholder'=>'AGAINST')); ?><!--
+                --><?php echo Form::text('votes_against', ($edit ? $policy->votes_against : null), array('size'=>'3', 'class'=>'input-mini', 'placeholder'=>'AGAINST')); ?><!--
                 --><span class="add-on"><i class="icon-check-empty"></i></span><!--
-                --><?php echo Form::text('votes_abstain', null, array('size'=>'3', 'class'=>'input-mini', 'placeholder'=>'ABSTAIN')); ?>
+                --><?php echo Form::text('votes_abstain', ($edit ? $policy->votes_abstain : null), array('size'=>'3', 'class'=>'input-mini', 'placeholder'=>'ABSTAIN')); ?>
             </div>
         </div>
     </fieldset>
