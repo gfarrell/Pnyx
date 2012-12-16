@@ -1,0 +1,1 @@
+<?php echo HTML::link('/policy/view/' . $policy->id, $policy->title); ?>
