@@ -37,6 +37,17 @@ class Policy extends mBase {
         return $this->has_many_and_belongs_to('Tag');
     }
 
+    public function tags_raw() {
+        $tags = $this->tags()->get();
+        $names = array();
+
+        foreach($tags as $t) {
+            array_push($names, $t->name);
+        }
+
+        return implode(',', $names);
+    }
+
     public function didPass() {
         $votes = array('votes_for','votes_against');
         $majority = '';
