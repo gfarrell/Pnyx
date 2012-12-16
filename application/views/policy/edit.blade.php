@@ -12,9 +12,14 @@
     <h1><?php echo $title; ?></h1>
     
     <?php
-        $form = Formly::make(array('display-inline-errors'=>true));
+        $form = Formly::make(($edit ? $policy : null))->set_options(array('display-inline-errors'=>true));
 
-        echo $form->open();
+        if($edit) {
+            echo $form->open('policy/edit', 'PUT');
+            echo $form->hidden('id');
+        } else {
+            echo $form->open('policy/add', 'POST');
+        }
     ?>
     
     <fieldset class="row">
