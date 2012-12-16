@@ -12,6 +12,10 @@
 <p>Proposed by: {{ $policy->proposed }}<br/>
 Seconded by: {{ $policy->seconded }}</p>
 
+<div class="labels">
+    <?php echo render('policy.partials.labels', array('policy' => $policy)); ?>
+</div>
+
 <h3>KCSU Notes</h3>
 
 {{ Sparkdown\Markdown($policy->notes) }}
