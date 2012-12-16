@@ -36,5 +36,31 @@ class Policy extends mBase {
     public function tags() {
         return $this->has_many_and_belongs_to('Tag');
     }
+
+    public function didPass() {
+        $votes = array('votes_for','votes_against');
+        $majority = '';
+        $max = 0;
+
+        foreach($votes as $key) {
+            if(strtolower($this->$key) == 'm') {
+                $vote_int = 0;
+                $majority = $key;
+            } elseif($this->$key != '') {
+                $vote_int = intval($this->$key);
+            } else {
+                $vote_int = 0;
+            }
+
+            if($vote_int > $max) {
+                $max = $vote_int;
+                if($majority == '') {
+                    $majority = $key;
+                }
+            }
+        }
+
+        return ($majority == 'votes_for');
+    }
 }
 ?>
