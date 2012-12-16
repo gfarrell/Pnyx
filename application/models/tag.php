@@ -12,7 +12,9 @@ class Tag extends mBase {
                 array_push($insert, array('name'=>$tag));
             }
         }
-        Tag::insert($insert);
+        if(count($insert) > 0) {
+            Tag::insert($insert);
+        }
     }
 }
 ?>
