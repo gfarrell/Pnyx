@@ -2,6 +2,23 @@
 
 <?php
     Section::append('page_title', $policy->title);
+
+    if(Auth::user()->isAdmin()):
+    Section::start('navbar_extras');
+?>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Policy
+        <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li><?php echo HTML::link('policy/edit/'.$policy->id, 'edit'); ?></li>
+        <li><?php echo render('partials.delete_button', array('location'=>'policy/delete', 'text'=>'delete', 'id'=>$policy->id, 'inline'=>true)); ?></li>
+    </ul>
+</li>
+<?php
+    Section::stop();
+    endif;
 ?>
 
 <?php Section::start('content'); Bundle::start('sparkdown'); ?>
