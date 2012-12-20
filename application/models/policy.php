@@ -88,12 +88,22 @@ class Policy extends mBase {
     }
 
     public function isCurrent() {
-        $now  = time();
+        $now = time();
+        return ($now < $this->expires());
+    }
+
+    public function expires() {
+        // Full Michaelmas term is defined to start on the 1st of October
+        // KCSU Policy is set to last X years, including the year in which
+        // it was passed
+        // Therefore to calculate expiry, we need to see if we are outside X
+        // year from the NEXT 1st october
         $then = strtotime($this->date);
+        $policy_date = array('y'=>intval(date('Y', $then)), 'm'=>intval(date('m', $then)));
 
-        $duration = Config::get('pnyx.policy_lifetime');
-
-        return ($now - $then > $duration);
+        $start_year = ($policy_date['m'] < 10) ? $policy_date['y'] : $policy_date['y'] + 1;
+        $expiry_year = $start_year + Config::get('pnyx.policy_lifetime');
+        return strtotime($expiry_year . '-' . '10-01'); // YYYY-10-01
     }
 
     public function votes($what) {
