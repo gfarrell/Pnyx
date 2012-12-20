@@ -1,9 +1,9 @@
 <?php
 return array(
     /**
-     * How long should policy last (seconds)
-     * default: 4 years
+     * How many academic years should policy last
+     * default: 4 years (+ year that policy passes in)
      */
-    'policy_lifetime' => 126144000
+    'policy_lifetime' => 4
 );
 ?>
