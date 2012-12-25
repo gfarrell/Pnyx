@@ -85,7 +85,8 @@ class Policy_Controller extends Base_Controller {
         }
 
         $data = Policy::cleanData(Input::all());
-        Policy::update($id, $data);
+        $policy->fill($data);
+        $policy->save();
 
         $policy->saveTags(explode(',',Input::get('raw_tags')));
 
