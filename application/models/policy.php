@@ -47,6 +47,34 @@ class Policy extends mBase {
             DB::table('policy_indices')->insert($indices);
         }
     }
+
+    public static function search($query) {
+        // Need to search title, notes, believes, resolves and keywords
+        // Weighting as follows:
+        //  title                       => 33% (so approx x3)
+        //  notes, believes + resolves  => 66% (22% each so approx x2)
+        //  and here is the super query that achieves this
+
+        $results = DB::query(<<<EOT
+SELECT  Policy.title, Policy.id, Policy.date,
+        Policy.votes_for, Policy.votes_against, Policy.votes_abstain,
+        SUM(IndexWeight.multiplier * (MATCH(data) AGAINST('work'))) AS score
+FROM policy_indices AS pIndex
+LEFT JOIN policies AS Policy ON (pIndex.policy_id = Policy.id)
+LEFT JOIN index_weights AS IndexWeight ON (pIndex.field_name = IndexWeight.field_name)
+GROUP BY pIndex.policy_id
+ORDER BY score DESC
+EOT
+            );
+
+        // Now make them into Policy objects
+        $policies = array();
+        foreach($results as $result) {
+            $policies[] = new Policy((array)$result);
+        }
+        return $policies;
+    }
+
     public static function cleanData($data) {
         $direct_fields = array('title','date','notes','believes','resolves','votes_for','votes_against','votes_abstain','review_flag');
 
