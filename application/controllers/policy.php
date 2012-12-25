@@ -94,6 +94,16 @@ class Policy_Controller extends Base_Controller {
     }
 
     public function delete_delete() {}
+
+    public function get_search($query=null) {
+        if(!is_null($query)) {
+            $policies = Policy::search($query);
+        } else {
+            $policies = array();
+        }
+
+        return Request::ajax() ? Response::eloquent($policies) : View::make('policy.search')->with(array('policies'=>$policies, 'query'=>$query));
+    }
 }
 
 ?>
