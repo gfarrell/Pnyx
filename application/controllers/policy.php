@@ -90,7 +90,7 @@ class Policy_Controller extends Base_Controller {
 
         $policy->saveTags(explode(',',Input::get('raw_tags')));
 
-        return Redirect::to('policy/edit/'.$id);
+        return $this->get_edit($id);
     }
 
     public function delete_delete() {}
