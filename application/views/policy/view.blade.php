@@ -1,4 +1,4 @@
-@layout('layouts.master');
+@layout('layouts.master')
 
 <?php
     Section::append('page_title', $policy->title);
