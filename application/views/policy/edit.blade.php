@@ -15,7 +15,7 @@
         $form = Formly::make(($edit ? $policy : null))->set_options(array('display-inline-errors'=>true));
 
         if($edit) {
-            echo $form->open('policy/edit', 'PUT');
+            echo $form->open('policy/edit/'.$policy->id, 'PUT');
             echo $form->hidden('id');
         } else {
             echo $form->open('policy/add', 'POST');
