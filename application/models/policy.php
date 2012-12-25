@@ -2,6 +2,51 @@
 class Policy extends mBase {
     public static $timestamps = false;
 
+
+    public function afterSave() {
+        Policy::index($this);
+    }
+
+    public static function index($policy) {
+        $index_fields = array('title', 'notes', 'believes', 'resolves');
+
+        // Set up indices
+        // Existing records have existing indices, so update them
+        $indices = DB::table('policy_indices')->where_policy_id($policy->id)->get();
+        if(is_array($indices) && count($indices) > 0) {
+            foreach($indices as $index) {
+                $field = $index->field_name;
+                $i = array_search($field, $index_fields);
+                if($i !== false) {
+                    DB::table('policy_indices')
+                            ->where('id', '=', $index->id)
+                            ->update(array(
+                                'data'=>$policy->{$field}
+                                )
+                            );
+                    // we'll have to deal with unindexed fields (if any)
+                    unset($index_fields[$i]);
+                } else {
+                    DB::table('policy_indices')->delete($index->id);
+                }
+            }
+            //$qIndex->update($indices);
+        }
+
+        // Now process the remaining fields
+        // For new records this will be all of them
+        if(count($index_fields) > 0) {
+            $indices = array();
+            foreach($index_fields as $field) {
+                array_push($indices, array(
+                    'policy_id'  => $policy->id,
+                    'field_name' => $field,
+                    'data'       => $policy->$field
+                ));
+            }
+            DB::table('policy_indices')->insert($indices);
+        }
+    }
     public static function cleanData($data) {
         $direct_fields = array('title','date','notes','believes','resolves','votes_for','votes_against','votes_abstain','review_flag');
 
