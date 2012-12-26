@@ -95,7 +95,8 @@ class Policy_Controller extends Base_Controller {
 
     public function delete_delete() {}
 
-    public function get_search($query=null) {
+    public function get_search() {
+        $query = Input::get('query');
         if(!is_null($query)) {
             $policies = Policy::search($query);
         } else {
