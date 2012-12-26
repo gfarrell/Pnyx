@@ -50,7 +50,11 @@ require.config({
 
 // Initialise application
 require(
-    ['jquery', 'underscore', 'bootstrap/dropdown', 'bootstrap/alert'],
+    [
+        'jquery', 'underscore',
+        'bootstrap/dropdown', 'bootstrap/alert',
+        'ui/submit'
+    ],
     function() {
         
     }
