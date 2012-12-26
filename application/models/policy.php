@@ -56,12 +56,20 @@ class Policy extends mBase {
         //  and here is the super query that achieves this
 
         $results = DB::query(<<<EOT
-SELECT  Policy.title, Policy.id, Policy.date,
+SELECT 
+        Policy.title, Policy.id, Policy.date,
         Policy.votes_for, Policy.votes_against, Policy.votes_abstain,
-        SUM(IndexWeight.multiplier * (MATCH(data) AGAINST('work'))) AS score
-FROM policy_indices AS pIndex
-LEFT JOIN policies AS Policy ON (pIndex.policy_id = Policy.id)
-LEFT JOIN index_weights AS IndexWeight ON (pIndex.field_name = IndexWeight.field_name)
+        SUM(IndexWeight.multiplier * (MATCH(data) AGAINST('$query'))) AS score
+FROM
+        policy_indices AS pIndex
+LEFT JOIN
+        policies AS Policy
+        ON (pIndex.policy_id = Policy.id)
+LEFT JOIN
+        index_weights AS IndexWeight
+        ON (pIndex.field_name = IndexWeight.field_name)
+WHERE
+    MATCH(data) AGAINST('$query')
 GROUP BY pIndex.policy_id
 ORDER BY score DESC
 EOT
