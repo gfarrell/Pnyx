@@ -20,6 +20,6 @@
     }
     echo $form->close();
     if($inline) {
-        echo HTML::link('#', $text, array('data-submit'=>'#'.$form_id));
+        echo HTML::link('#', $text, array('data-submit'=>'#'.$form_id, 'data-confirm'=>'Are you sure you want to delete (you cannot undo this)?'));
     }
 ?>
