@@ -26,7 +26,10 @@ class Policy_Controller extends Base_Controller {
      */
     public function get_view($id=null) {
         $policy = Policy::find($id);
-        if(!$policy) return Response::error(404);
+        if(!$policy) {
+            Session::flash('alert_error', "No Policy document with id $id exists.");
+            return Response::error(404);
+        }
 
         return Request::ajax() ? Response::eloquent($policy) : View::make('policy.view')->with(array('policy'=>$policy));
     }
@@ -50,7 +53,7 @@ class Policy_Controller extends Base_Controller {
         $policy = Policy::find($id);
 
         if(is_null($id) || is_null($policy)) {
-            return Redirect::to('policy/add');
+            return Redirect::to('policy/add')->with('alert_error', 'No such Policy document exists with id '.$id.'. You can create one below.');
         }
 
         Input::replace($policy->attributes);
@@ -68,6 +71,7 @@ class Policy_Controller extends Base_Controller {
      */
     public function post_add() {
         $id = Policy::makeFromArray(Input::all());
+        Session::flash('alert_success', 'Policy document successfully created.');
         return Redirect::to('policy/view/'.$id);
     }
 
@@ -89,6 +93,8 @@ class Policy_Controller extends Base_Controller {
         $policy->save();
 
         $policy->saveTags(explode(',',Input::get('raw_tags')));
+
+        Session::flash('alert_success', 'Changes saved.');
 
         return $this->get_edit($id);
     }
