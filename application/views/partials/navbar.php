@@ -15,8 +15,8 @@
 
             <?php if(!is_null($extras)) { echo $extras; } ?>
         </ul>
-        <form class="navbar-search pull-right">
-            <input type="text" class="search-query" placeholder="search..." />
+        <form action="/policy/search" method="get" class="navbar-search pull-right">
+            <input name="query" type="text" class="search-query" placeholder="search..." />
         </form>
     </div>
 </div>
