@@ -99,7 +99,23 @@ class Policy_Controller extends Base_Controller {
         return $this->get_edit($id);
     }
 
-    public function delete_delete() {}
+    public function delete_delete() {
+        $id = Input::get('id');
+        $policy = Policy::find($id);
+
+        if(!$policy) {
+            Session::flash('alert_error', "No Policy document with id $id exists, so I cannot delete it.");
+            return Redirect::back();
+        } else {
+            $title = $policy->title;
+            // Delete all indices
+            DB::table('policy_indices')->where('policy_id', '=', $policy->id)->delete();
+            // Now delete policy
+            $policy->delete();
+            Session::flash('alert_success', 'Policy document "'. $title .'" successfully deleted.');
+            return Redirect::to('policy/index');
+        }
+    }
 
     public function get_search() {
         $query = Input::get('query');
