@@ -34,7 +34,8 @@
 
 Route::get('/', function()
 {
-	return View::make('home.index');
+	return View::make('home.index')
+                ->with('latest_policies', Policy::order_by('date', 'desc')->take(5)->get());
 });
 
 Route::controller('policy');
