@@ -14,13 +14,8 @@
 		<p>
 			To find out more about Pnyx (including why it's called &ldquo;Pnyx&rdquo;), please click {{HTML::link('/help/pnyx', 'here') }}.
 	</div>
-	
-	<div class="row">
-		<div class="span6">
-			<h2>Expiring Policy</h2>
-		</div>
-		<div class="span6">
-			<h2>Latest Policy</h2>
-		</div>
+	<div class="span12">
+		<h2>Latest Policy</h2>
+		<?php echo render('policy.partials.list', array('policies'=>$latest_policies)); ?>
 	</div>
 @endsection
