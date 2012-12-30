@@ -1,0 +1,1 @@
+<?php echo HTML::link('/user/edit/' . $user->id, $user->crsid); ?>
