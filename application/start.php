@@ -184,3 +184,19 @@ if ( ! Request::cli() and Config::get('session.driver') !== '')
 
 \Laravel\Database\Eloquent\Pivot::$timestamps = false;
 \Laravel\Database\Eloquent\Model::$timestamps = false;
+
+/*
+|--------------------------------------------------------------------------
+| Set some policy expiry-date constants
+|--------------------------------------------------------------------------
+|
+| NB Full Michaelmas term is defined to start on the 1st of October.
+| KCSU Policy is set to last X years,
+| including the year in which it was passed,
+| so policy expires in X years from the NEXT 1st october.
+|
+*/
+
+define('PNYX_POLICY_UPPER_DATE', strtotime((intval(date('Y')) - Config::get('pnyx.policy_lifetime')).'-10-01'));
+define('PNYX_POLICY_LOWER_DATE', strtotime((intval(date('Y')) - Config::get('pnyx.policy_lifetime') + 1).'-10-01'));
+
