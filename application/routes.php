@@ -38,6 +38,16 @@ Route::get('/', function()
                 ->with('latest_policies', Policy::order_by('date', 'desc')->take(5)->get());
 });
 
+Route::get('/admin', function() {
+    if(!Auth::user()->isAdmin() || Auth::user()->suspended) {
+        return Response::error(403);
+    }
+    return View::make('home.admin')
+            ->with('users', User::all())
+            ->with('groups', UserGroup::all())
+            ->with('index_weights', DB::table('index_weights')->get());
+});
+
 Route::controller('policy');
 Route::get('/tags.json/(:any)', function($query) {
     $query = Input::get('q');
