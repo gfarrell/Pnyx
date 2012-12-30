@@ -18,6 +18,27 @@ class Policy_Controller extends Base_Controller {
         return Request::ajax() ? Response::eloquent($policies) : View::make('policy.index')->with(array('policies'=>$policies));
     }
 
+
+
+    /**
+     * GET current
+     * Displays all current policy.
+     * 
+     */
+    public function get_current() {
+        // To get all policy that is current, it must have both passed and not expired
+        
+        $policies = Policy::order_by('date', 'desc')
+                            ->where(function($query) {
+                                $query->where('votes_for', '=', 'm');
+                                $query->or_where('votes_for', '>', 'votes_against');
+                            })
+                            ->where('votes_against', '!=', 'm')
+                            ->where('date', '>', PNYX_POLICY_UPPER_DATE)
+                            ->get();
+        return Request::ajax() ? Response::eloquent($policies) : View::make('policy.current')->with('policies', $policies);
+    }
+
     /**
      * GET view
      * View an individual policy.
