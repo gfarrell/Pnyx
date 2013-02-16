@@ -92,8 +92,13 @@ class Policy_Controller extends Base_Controller {
      */
     public function post_add() {
         $id = Policy::makeFromArray(Input::all());
-        Session::flash('alert_success', 'Policy document successfully created.');
-        return Redirect::to('policy/view/'.$id);
+        if($id) {
+            Session::flash('alert_success', 'Policy document successfully created.');
+            return Redirect::to('policy/view/'.$id);
+        } else {
+            Session::flash('alert_error', 'Policy creation failed!');
+            return View::make('policy.edit');
+        }
     }
 
     /**
