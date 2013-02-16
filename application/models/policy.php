@@ -151,6 +151,7 @@ EOT
             if(strtolower($this->$key) == 'm') {
                 $vote_int = 0;
                 $majority = $key;
+                break;
             } elseif($this->$key != '') {
                 $vote_int = intval($this->$key);
             } else {
@@ -159,9 +160,7 @@ EOT
 
             if($vote_int > $max) {
                 $max = $vote_int;
-                if($majority == '') {
-                    $majority = $key;
-                }
+                $majority = $key;
             }
         }
 
