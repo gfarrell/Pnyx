@@ -110,10 +110,13 @@ EOT
         // Save data fields
         $policy = Policy::create($data_extract);
 
-        // Process tags
-        $policy->saveTags(explode(',', $data['raw_tags']));
-
-        return $policy->id;
+        if($policy) {
+            // Process tags
+            $policy->saveTags(explode(',', $data['raw_tags']));
+            return $policy->id;
+        } else {
+            return false;
+        }
     }
 
     public function saveTags($tags) {
