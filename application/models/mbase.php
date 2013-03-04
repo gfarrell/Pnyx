@@ -7,8 +7,10 @@ class mBase extends Eloquent {
 
     public function save() {
         if($this->beforeSave(true)) {
-            parent::save();
+            $res = parent::save();
             $this->afterSave(true);
+
+            return $res;
         } else {
             throw new Exception('Unable to save data, beforeSave returned false.');
         }
