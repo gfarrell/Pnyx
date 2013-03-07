@@ -86,21 +86,23 @@ EOT
     public static function cleanData($data) {
         $direct_fields = array('title','date','notes','believes','resolves','votes_for','votes_against','votes_abstain','review_flag');
 
-        $data = Set::get($data, $direct_fields);
+        $new_data = Set::get($data, $direct_fields);
 
         // Fix any date problems
-        $data['date'] = date('Y-m-d', strtotime($data['date']));
+        $new_data['date'] = date('Y-m-d', strtotime($data['date']));
 
         // Deal with prop / sec
         $people = Set::get($data, array('proposed','seconded'));
         foreach($people as $type => $p) {
             if(User::validateCrsid($p)) {   // Only lookup if it is a CRSID
                 $u = User::lookup($p);
-                $data[$type] = is_null($u) ? $p : $u['name'];
+                $new_data[$type] = is_null($u) ? $p : $u['name'];
+            } else {
+                $new_data[$type] = $p;
             }
         }
 
-        return $data;
+        return $new_data;
     }
 
     public static function makeFromArray($data) {
