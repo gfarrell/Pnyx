@@ -31,10 +31,10 @@ class Policy_Controller extends Base_Controller {
         $policies = Policy::order_by('date', 'desc')
                             ->where(function($query) {
                                 $query->where('votes_for', '=', 'm');
-                                $query->or_where('votes_for', '>', 'votes_against');
+                                $query->or_where('votes_for', '>', DB::raw('`votes_against`')); // have to do this escapism of the second field otherwise Laravel treats it as a string value, not a field.
                             })
                             ->where('votes_against', '!=', 'm')
-                            ->where('date', '>', PNYX_POLICY_UPPER_DATE)
+                            ->where('date', '>', PNYX_POLICY_UPPER_DATE) // don't need to transform dates
                             ->get();
         return Request::ajax() ? Response::eloquent($policies) : View::make('policy.current')->with('policies', $policies);
     }
