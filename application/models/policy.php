@@ -199,6 +199,9 @@ EOT
             if(strtolower($vote) == 'm') {
                 $result = 'majority';
             }
+            if($vote != '') {
+                $result = $vote;
+            }
         } else {
             throw new Exception('Invalid vote type "' . $what . '".');
         }
