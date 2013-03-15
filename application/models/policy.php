@@ -217,4 +217,9 @@ EOT
         return $result;
     }
 }
+
+// EVENTS
+
+Event::listen('eloquent.deleting: Policy', function($policy) { Policy::deleteIndices($policy->id); });
+
 ?>
