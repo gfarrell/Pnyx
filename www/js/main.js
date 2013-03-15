@@ -52,7 +52,7 @@ require.config({
 require(
     [
         'jquery', 'underscore',
-        'bootstrap/dropdown', 'bootstrap/alert',
+        'bootstrap/dropdown', 'bootstrap/alert', 'bootstrap/collapse',
         'ui/submit'
     ],
     function() {
