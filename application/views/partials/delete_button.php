@@ -2,7 +2,8 @@
     $_defaults = array(
         'location'  =>  'delete',
         'text'      =>  'delete',
-        'inline'    =>  false
+        'inline'    =>  false,
+        'class'     =>  ''
     );
     foreach($_defaults as $vv => $df_val) {
         if(!isset($$vv)) {
@@ -20,6 +21,6 @@
     }
     echo $form->close();
     if($inline) {
-        echo HTML::link('#', $text, array('data-submit'=>'#'.$form_id, 'data-confirm'=>'Are you sure you want to delete (you cannot undo this)?'));
+        echo HTML::link('#', $text, array('class'=>$class, 'data-submit'=>'#'.$form_id, 'data-confirm'=>'Are you sure you want to delete (you cannot undo this)?'));
     }
 ?>
