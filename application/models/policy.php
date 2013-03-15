@@ -48,6 +48,12 @@ class Policy extends mBase {
         }
     }
 
+    public static function deleteIndices($policy_id) {
+        DB::table('policy_indices')
+                ->where('policy_id', '=', $policy_id)
+                ->delete();
+    }
+
     public static function search($query) {
         // Need to search title, notes, believes, resolves and keywords
         // Weighting as follows:
