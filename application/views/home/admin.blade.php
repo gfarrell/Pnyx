@@ -21,6 +21,8 @@ Section::start('content');
                 if($user->suspended) {
                     echo render('partials.label', array('content'=>'suspended', 'type'=>'important'));
                 }
+
+                echo render('partials.delete_button', array('location'=>'user/delete', 'id'=>$user->id, 'inline'=>true, 'class'=>'btn btn-mini btn-danger'));
                 ?>
             </li>
             <?php endforeach; ?>
