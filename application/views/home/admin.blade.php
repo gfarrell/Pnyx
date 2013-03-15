@@ -25,14 +25,20 @@ Section::start('content');
             </li>
             <?php endforeach; ?>
         </ul>
-        <?php
-        $uForm = Formly::make('User');
-        echo $uForm->open('user/add');
-        echo $uForm->text('crsid', null, array('placeholder'=>'crsid'));
-        echo $uForm->select('group', $groups);
-        echo $uForm->submit('add user');
-        echo $uForm->close();
-        ?>
+
+        <div class="well">
+            <h3><a href="#AddUserForm" data-toggle="collapse" data-target="#AddUserForm">New User</a></h3>
+            <div id="AddUserForm" class="collapse out">
+                <?php
+                $uForm = Formly::make('User');
+                echo $uForm->open('user/add');
+                echo $uForm->text('crsid', 'CRSID', null, array('placeholder'=>'crsid'));
+                echo $uForm->select('group', 'Group', $groups_list);
+                echo $uForm->submit_primary('add user');
+                echo $uForm->close();
+                ?>
+            </div>
+        </div>
     </div>
     <div class="span6">
         <h2>Groups</h2>
