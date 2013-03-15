@@ -3,6 +3,17 @@
 class Policy_Controller extends Base_Controller {
     public $restful = true;
 
+    public $validation = array(
+        'title'         =>  'required',
+        'date'          =>  'required',
+        'notes'         =>  'required|min:50',
+        'believes'      =>  'required|min:50',
+        'resolves'      =>  'required|min:50',
+        'votes_for'     =>  'min:0',
+        'votes_against' =>  'min:0',
+        'votes_abstain' =>  'min:0'
+    );
+
     public function __construct() {
         $this->filter('before', 'auth');
     }
@@ -91,6 +102,12 @@ class Policy_Controller extends Base_Controller {
      * 
      */
     public function post_add() {
+        // $validation = Validator::make($input = Input::get(), $this->validation);
+
+        // if ($validation->fails()) {
+        //     return Redirect::to('policy/add')->with_errors($validation)->with_input(Input::get());
+        // }
+
         $id = Policy::makeFromArray(Input::all());
         if($id) {
             Session::flash('alert_success', 'Policy document successfully created.');
@@ -108,6 +125,13 @@ class Policy_Controller extends Base_Controller {
      */
     public function put_edit() {
         $id = Input::get('id');
+        
+        // $validation = Validator::make($input = Input::get(), $this->validation);
+
+        // if ($validation->fails()) {
+        //     return Redirect::to('policy/edit/'.$id)->with_errors($validation)->with_input(Input::get());
+        // }
+
         $policy = Policy::find($id);
 
         if(is_null($id) || is_null($policy)) {
