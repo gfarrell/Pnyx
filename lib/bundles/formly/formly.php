@@ -333,6 +333,7 @@ class Formly
 	private function build_label($name, $label = '')
 	{
 		$out = '';
+                $name = $this->id_prefix . $name;
 		if ( ! empty($label))
 		{
 			$class = 'control-label';
@@ -535,7 +536,7 @@ class Formly
 	public function reset($value, $attributes = array())
 	{
 		$attributes['type'] = 'reset';
-		$attributes['class'] .= ' btn';
+		$attributes['class'] = array_get($attributes, 'class').' btn';
 		return Form::button($value, $attributes);
 	}
 
