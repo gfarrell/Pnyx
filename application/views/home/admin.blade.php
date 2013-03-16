@@ -27,19 +27,15 @@ Section::start('content');
             </li>
             <?php endforeach; ?>
         </ul>
-
-        <div class="well">
-            <h3><a href="#AddUserForm" data-toggle="collapse" data-target="#AddUserForm">New User</a></h3>
-            <div id="AddUserForm" class="collapse out">
-                <?php
-                $uForm = Formly::make('User');
-                echo $uForm->open('user/add');
-                echo $uForm->text('crsid', 'CRSID', null, array('placeholder'=>'crsid'));
-                echo $uForm->select('group', 'Group', $groups_list);
-                echo $uForm->submit_primary('add user');
-                echo $uForm->close();
-                ?>
-            </div>
+        <div id="AddUserForm">
+            <?php
+            // Not using Formly because we want an inline form, and it doesn't play nicely with them
+            echo Form::open('user/add', 'POST', array('class'=>'form-inline'));
+            echo Form::text('crsid', null, array('placeholder'=>'crsid', 'class'=>'input-small'));
+            echo Form::select('group', $groups_list, null, array('class'=>'input-medium'));
+            echo Form::submit('add user', array('class'=>'btn btn-primary'));
+            echo Form::close();
+            ?>
         </div>
     </div>
     <div class="span6">
