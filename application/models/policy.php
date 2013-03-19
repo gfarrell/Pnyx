@@ -206,8 +206,7 @@ EOT
             $vote = $this->$what;
             if(strtolower($vote) == 'm') {
                 $result = 'majority';
-            }
-            if($vote != '') {
+            } elseif($vote != '') {
                 $result = $vote;
             }
         } else {
