@@ -1,10 +1,11 @@
 @layout('layouts.master')
 
 <?php 
-    Section::append('page_title', 'All Policy');
+    Section::append('page_title', 'All Motions');
     Section::start('content');
 ?>
 
+<h1>All motions</h1>
 <table class="table table-striped table-hover">
     <thead>
         <tr>
