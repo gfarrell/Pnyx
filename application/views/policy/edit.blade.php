@@ -8,7 +8,7 @@
 ?>
 
 
-<?php Section::start('content'); ?>
+@section('content')
     <h1><?php echo $title; ?></h1>
     
     <?php
@@ -124,7 +124,7 @@
         <button class="btn btn-danger" type="reset">Cancel</button>
     </div>
     <?php echo $form->close(); ?>
-<?php Section::stop(); ?>
+@endsection
 
 <?php Section::start('scripts'); ?>
 <script language="javascript" type="text/javascript">
