@@ -36,7 +36,7 @@
 return array(
 
 	'docs' => array('handles' => 'docs'),
-    'anbu' => array('auto'    => 'true'),
+    'anbu' => array('auto'    => true),
     'formly' => array(
         'autoloads' => array(
             'map' => array(
@@ -44,5 +44,13 @@ return array(
             ),
         ),
     ),
-    'sparkdown'
+    'sparkdown',
+    'ravenly' => array(
+        'autoloads' => array(
+            'namespaces'    =>  array(
+                'Ravenly'           =>'(:bundle)'
+            )
+        ),
+        'auto'  => true
+    )
 );
