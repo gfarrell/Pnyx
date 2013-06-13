@@ -8,7 +8,7 @@
             <li><a href="/policy/index" title="All Policy">All Policies</a></li>
             <li><a href="/policy/current" title="Current Policy">Current Policy</a></li>
             
-            <?php if(Auth::check() && Auth::user()->isAdmin()): ?>
+            <?php if(Ravenly::loggedIn() && Ravenly::user()->inGroup('admin')): ?>
             <li><a href="/policy/add" title="Add a Policy">Add Policy</a></li>
             <li><a href="/admin" title="Administrative Controls">Administration</a></li>
             <?php endif; ?>

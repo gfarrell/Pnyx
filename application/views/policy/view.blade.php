@@ -3,7 +3,7 @@
 <?php
     Section::append('page_title', $policy->title);
 
-    if(Auth::user()->isAdmin()):
+    if(Ravenly::user()->inGroup('admin')):
     Section::start('navbar_extras');
 ?>
 <li class="dropdown">

@@ -199,17 +199,3 @@ if ( ! Request::cli() and Config::get('session.driver') !== '')
 
 define('PNYX_POLICY_UPPER_DATE', strtotime((intval(date('Y')) - Config::get('pnyx.policy_lifetime')).'-10-01'));
 define('PNYX_POLICY_LOWER_DATE', strtotime((intval(date('Y')) - Config::get('pnyx.policy_lifetime') + 1).'-10-01'));
-
-/*
-|--------------------------------------------------------------------------
-| Log the user in if necessary
-|--------------------------------------------------------------------------
-|
-*/
-
-if(isset($_SERVER['REMOTE_USER']) && !Auth::check()) {
-    $u = User::where('crsid', '=', $_SERVER['REMOTE_USER'])->first();
-    if($u) {
-        Auth::login($u->id);
-    }
-}

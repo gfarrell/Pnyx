@@ -195,7 +195,8 @@ return array(
 		'View'       	=> 'Laravel\\View',
 
 		// Vendor aliases
-		'Formly'		=>	'Flare\\Formly'
+		'Formly'		=>	'Flare\\Formly',
+		'Ravenly'		=>	'Ravenly\\Ravenly'
 	),
 
 );
