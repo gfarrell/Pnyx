@@ -1,0 +1,3 @@
+[submodule "lib/bundles/ravenly"]
+	path = lib/bundles/ravenly
+	url = git://github.com/gfarrell/Ravenly.git
