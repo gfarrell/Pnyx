@@ -8,7 +8,7 @@
 ?>
 
 
-<?php Section::start('content'); ?>
+@section('content')
     <h1><?php echo $title; ?></h1>
     
     <?php
