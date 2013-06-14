@@ -16,6 +16,7 @@ class Policy_Controller extends Base_Controller {
 
     public function __construct() {
         $this->filter('before', 'raven');
+        $this->filter('before', 'raven:group', array('admin'))->only(array('add', 'edit', 'delete'));
     }
 
     /**
