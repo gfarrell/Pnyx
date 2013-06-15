@@ -1,5 +1,7 @@
 <?php
 
+use Ravenly\Models\User;
+use Ravenly\Models\UserGroup;
 
 Route::get('/', function()
 {
