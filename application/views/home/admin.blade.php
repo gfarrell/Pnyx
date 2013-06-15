@@ -2,53 +2,66 @@
 
 <?php
 Section::append('page_title', 'Administrative Interface');
-Section::start('content');
 ?>
+
+@section('content')
 
 <h1>Administrative Controls</h1>
 
 <div class="row">
     <div class="span6">
         <h2>Users</h2>
-        <ul class="user-list">
-            <?php foreach($users as $user): ?>
-            <li>
-                <?php
-                echo render('user.partials.link', array('user'=>$user));
-
-                echo render('partials.label', array('content'=>$user->group()->first()->name));
-
-                if($user->suspended) {
-                    echo render('partials.label', array('content'=>'suspended', 'type'=>'important'));
-                }
-
-                echo render('partials.delete_button', array('location'=>'user/delete', 'id'=>$user->id, 'inline'=>true, 'class'=>'btn btn-mini btn-danger'));
-                ?>
-            </li>
-            <?php endforeach; ?>
-        </ul>
-        <div id="AddUserForm">
-            <?php
-            // Not using Formly because we want an inline form, and it doesn't play nicely with them
-            echo Form::open('user/add', 'POST', array('class'=>'form-inline'));
-            echo Form::text('crsid', null, array('placeholder'=>'crsid', 'class'=>'input-small'));
-            echo Form::select('group', $groups_list, null, array('class'=>'input-medium'));
-            echo Form::submit('add user', array('class'=>'btn btn-primary'));
-            echo Form::close();
-            ?>
-        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>crsid</th>
+                    <th>groups</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($users as $user)
+                <tr>
+                    <td>{{ $user->id }}</td>
+                    <td>@render('user.partials.mailto', array('user'=>$user, 'label'=>$user->crsid))</td>
+                    <td>
+                        @foreach($user->groups()->get() as $ugrp)
+                            @render('partials.label', array('content'=>$ugrp->name))
+                        @endforeach
+                    </td>
+                    <td>
+                        {{ HTML::link('/users/edit/'.$user->id, 'edit', array('class'=>'btn btn-mini')) }}
+                        @render('partials.delete_button', array('location'=>'user/delete', 'id'=>$user->id, 'inline'=>true, 'class'=>'btn btn-mini btn-danger'))
+                    </td>
+                </tr>
+                @endforeach
+                <tr>
+                    <td></td>
+                    <td colspan="4">
+                        {{-- Not using Formly because we want an inline form, and it doesn't play nicely with them --}}
+                        {{ Form::open('user/add', 'POST', array('class'=>'form-inline')); }}
+                        <div class="control-group input-append">
+                            {{ Form::text('crsid', null, array('placeholder'=>'crsid')); }}
+                            <button class="btn btn-primary"><i class="icon-plus"></i></span>
+                        </div>
+                        {{ Form::close(); }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="span6">
         <h2>Groups</h2>
         <ul>
-            <?php foreach($groups as $group): ?>
+            @foreach($groups as $group)
             <li>
-                <?php echo $group->name . ' (' . $group->user()->count() . ')'; ?>
+                {{ $group->name . ' (' . $group->users()->count() . ')' }}
             </li>
-        <?php endforeach; ?>
+            @endforeach
         </ul>
     </div>
 </div>
 <hr/>
 
-<?php Section::stop(); ?>
+@endsection
