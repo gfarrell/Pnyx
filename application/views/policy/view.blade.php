@@ -21,15 +21,17 @@
 @section('content')
 <?php Bundle::start('sparkdown'); ?>
 <h1>
-    {{ $policy->title }} <small>{{ $policy->date }}</small>
+    {{ $policy->title }} <small class="labels">@render('policy.partials.labels', array('policy' => $policy))</small>
 </h1>
 
-<p>Proposed by: {{ $policy->proposed }}<br/>
-Seconded by: {{ $policy->seconded }}</p>
-
-<div class="labels">
-    @render('policy.partials.labels', array('policy' => $policy))
-</div>
+<dl class="dl-horizontal">
+    <dt>Proposed by</dt><dd>{{ $policy->proposed }}</dd>
+    <dt>Seconded by</dt><dd>{{ $policy->seconded }}</dd>
+    <dt>Motion brought</dt><dd>{{ date('jS F, Y', strtotime($policy->date)) }}</dd>
+    @if($policy->didPass())
+    <dt>Policy Expire{{ $policy->isCurrent() ? 's' : 'd' }}</dt><dd>{{ date('F, Y', $policy->expires()) }}</dd>
+    @endif
+</dl>
 
 <h3>KCSU Notes</h3>
 
