@@ -9,7 +9,7 @@ Route::get('/', function()
                 ->with('latest_policies', Policy::order_by('date', 'desc')->take(5)->get());
 });
 
-Route::get('/admin', function() {
+Route::get('/admin', array('before'=>'raven', function() {
     if(!Ravenly::user()->inGroup('admin')) {
         return Response::error(403);
     }
@@ -24,7 +24,7 @@ Route::get('/admin', function() {
             ->with('groups', $groups)
             ->with('groups_list', $groups_list)
             ->with('index_weights', DB::table('index_weights')->get());
-});
+}));
 
 Route::controller('policy');
 Route::get('/tags.json/(:any)', function($query) {
