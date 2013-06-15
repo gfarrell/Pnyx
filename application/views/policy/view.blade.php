@@ -1,27 +1,25 @@
 @layout('layouts.master')
 
-<?php
-    Section::append('page_title', $policy->title);
+<?php Section::append('page_title', $policy->title); ?>
 
-    if(Ravenly::user()->inGroup('admin')):
-    Section::start('navbar_extras');
-?>
+@if(Ravenly::user()->inGroup('admin'))
+@section('navbar_extras')
+
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         Policy
         <b class="caret"></b>
     </a>
     <ul class="dropdown-menu">
-        <li><?php echo HTML::link('policy/edit/'.$policy->id, 'edit'); ?></li>
-        <li><?php echo render('partials.delete_button', array('location'=>'policy/delete', 'text'=>'delete', 'id'=>$policy->id, 'inline'=>true)); ?></li>
+        <li>{{ HTML::link('policy/edit/'.$policy->id, 'edit') }}</li>
+        <li>@render('partials.delete_button', array('location'=>'policy/delete', 'text'=>'delete', 'id'=>$policy->id, 'inline'=>true))</li>
     </ul>
 </li>
-<?php
-    Section::stop();
-    endif;
-?>
+@endsection
+@endif
 
-<?php Section::start('content'); Bundle::start('sparkdown'); ?>
+@section('content')
+<?php Bundle::start('sparkdown'); ?>
 <h1>
     {{ $policy->title }} <small>{{ $policy->date }}</small>
 </h1>
@@ -30,7 +28,7 @@
 Seconded by: {{ $policy->seconded }}</p>
 
 <div class="labels">
-    <?php echo render('policy.partials.labels', array('policy' => $policy)); ?>
+    @render('policy.partials.labels', array('policy' => $policy))
 </div>
 
 <h3>KCSU Notes</h3>
@@ -68,4 +66,4 @@ Seconded by: {{ $policy->seconded }}</p>
 
 The vote, taken on {{ date('l, jS F, Y', strtotime($policy->date)) }}, was: {{ $vote }}. <strong>The motion {{ $policy->didPass() ? 'passed' : 'failed' }}</strong>.
 
-<?php Section::stop(); ?>
+@endsection
