@@ -1,3 +1,6 @@
 [submodule "lib/bundles/ravenly"]
 	path = lib/bundles/ravenly
 	url = git://github.com/gfarrell/Ravenly.git
+[submodule "lib/lessphp"]
+	path = lib/lessphp
+	url = git://github.com/leafo/lessphp.git
