@@ -23,7 +23,7 @@
 
 $environments = array(
 	'local'  => array('pnyx.dev'),
-	'hosted' => array('http://pnyx.kcsu.org.uk'),
+	'srcf' 	 => array('http://pnyx.kcsu.org.uk'),
     'appfog' => array('http://pnyx-dev.kcsu.org.uk', 'kcsu-pnyx.eu01.aws.af.cm')
 );
 
