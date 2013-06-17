@@ -4,7 +4,7 @@
         <ul class="nav">
             <li>{{ HTML::link('policy/index', 'Policy') }}</li>
             <li>{{ HTML::link('minutes/index', 'Minutes') }}</li>
-            <li>{{ HTML::link('docs/index', 'Governing Documents') }}</li>
+            <li>{{ HTML::link('docs/index', 'Documents') }}</li>
 
             @if(Ravenly::loggedIn() && Ravenly::user()->inGroup('admin'))
             <li class="dropdown">
