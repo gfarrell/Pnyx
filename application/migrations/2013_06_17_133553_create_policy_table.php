@@ -27,8 +27,6 @@ class Create_Policy_Table {
 
 			$table->string('proposed', 100);
 			$table->string('seconded', 100);
-			
-			$table->timestamps();
 		});
 
 		// Create policy index table
@@ -41,8 +39,6 @@ class Create_Policy_Table {
 			$table->integer('policy_id')->unsigned();
 
 			$table->fulltext('data'); // fulltext searching
-			
-			$table->timestamps();
 		});
 	}
 

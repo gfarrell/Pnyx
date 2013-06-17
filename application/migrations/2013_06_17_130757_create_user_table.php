@@ -13,16 +13,12 @@ class Create_User_Table {
 		Schema::create('users', function($table) {
 			$table->increments('id');
 			$table->string('crsid', 25);
-
-			$table->timestamps();
 		});
 
 		// Create user groups table
 		Schema::create('user_groups', function($table){
 			$table->increments('id');
 			$table->string('name', 50)->unique();
-
-			$table->timestamps();
 		});
 
 		// Pivot table
@@ -33,8 +29,6 @@ class Create_User_Table {
 
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->foreign('usergroup_id')->references('id')->on('user_groups');
-			
-			$table->timestamps();
 		});
 	}
 

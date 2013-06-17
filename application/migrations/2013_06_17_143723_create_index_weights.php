@@ -13,8 +13,6 @@ class Create_Index_Weights {
 			$table->increments('id');
 			$table->string('field_name', 100);
 			$table->integer('multiplier');
-			
-			$table->timestamps();
 		});
 	}
 
