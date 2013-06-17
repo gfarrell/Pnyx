@@ -36,7 +36,6 @@
 return array(
 
 	'docs' => array('handles' => 'docs'),
-    'anbu' => array('auto'    => true),
     'formly' => array(
         'autoloads' => array(
             'map' => array(

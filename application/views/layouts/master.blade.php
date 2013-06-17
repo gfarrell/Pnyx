@@ -43,7 +43,6 @@
         
         <!-- Footer -->
         <div class="footer">
-            <?php Anbu::render(); // Debugger ?>
         </div>
 
         <!-- Run main.js -->
