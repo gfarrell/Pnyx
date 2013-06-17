@@ -5,13 +5,21 @@
     <div class="navbar-inner">
         <a class="brand" href="/">PNYX</a>
         <ul class="nav">
-            <li><a href="/policy/index" title="All Policy">All Policies</a></li>
-            <li><a href="/policy/current" title="Current Policy">Current Policy</a></li>
-            
-            <?php if(Ravenly::loggedIn() && Ravenly::user()->inGroup('admin')): ?>
-            <li><a href="/policy/add" title="Add a Policy">Add Policy</a></li>
-            <li><a href="/admin" title="Administrative Controls">Administration</a></li>
-            <?php endif; ?>
+            <li>{{ HTML::link('policy/index', 'Policy') }}</li>
+            <li>{{ HTML::link('minutes/index', 'Minutes') }}</li>
+            <li>{{ HTML::link('docs/index', 'Governing Documents') }}</li>
+
+            @if(Ravenly::loggedIn() && Ravenly::user()->inGroup('admin'))
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Add <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li>{{ HTML::link('policy/add', 'Policy') }}</li>
+                    <li>{{ HTML::link('minutes/add', 'Minutes') }}</li>
+                    <li>{{ HTML::link('docs/add', 'Documents') }}</li>
+                </ul>
+            </li>
+            <li>{{ HTML::link('admin', 'Administration') }}</li>
+            @endif
 
             <?php if(!is_null($extras)) { echo $extras; } ?>
         </ul>
