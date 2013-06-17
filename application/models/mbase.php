@@ -1,7 +1,5 @@
 <?php
 class mBase extends Eloquent {
-    public static $timestamps = false;
-
     protected function beforeSave() { return true; }
     protected function afterSave()  { return true;}
 
