@@ -27,15 +27,6 @@ Route::get('/admin', array('before'=>'raven', function() {
 }));
 
 Route::controller('policy');
-Route::get('/tags.json/(:any)', function($query) {
-    $query = Input::get('q');
-    $tags = Tag::where('name', 'LIKE', '%'.$query.'%')->take(10)->get();
-    /*
-        FOR SOME F*ING REASON THIS RETURNS ALL THE RESULTS, EVEN WHEN THE SQL QUERY WORKS PROPERLY
-        WTF!
-     */
-    return Response::eloquent($tags); // Return JSON'd model
-});
 
 /*
 |--------------------------------------------------------------------------
