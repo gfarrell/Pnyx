@@ -1,6 +1,3 @@
-<?php
-    $extras = Section::yield('navbar_extras');
-?> 
 <div class="navbar">
     <div class="navbar-inner">
         <a class="brand" href="/">PNYX</a>
@@ -21,7 +18,7 @@
             <li>{{ HTML::link('admin', 'Administration') }}</li>
             @endif
 
-            <?php if(!is_null($extras)) { echo $extras; } ?>
+            @yield('navbar_extras')
         </ul>
         <form action="/policy/search" method="get" class="navbar-search pull-right">
             <input name="query" type="text" class="search-query" placeholder="search..." />
