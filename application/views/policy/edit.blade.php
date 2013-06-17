@@ -97,42 +97,9 @@
         </div>
     </fieldset>
     
-    <fieldset class="row">
-        <legend>Metadata</legend>
-        
-        <div class="span4 muted">
-            <p>
-                The metadata described here will help us keep our records in order, and enable better searching.
-            </p>
-            <p>
-                The comma separated tags should be for related subject matter, e.g. &ldquo;formals&rdquo; or &ldquo;direct action&rdquo;. There will be automatically provided suggestions as you type.
-            </p>
-            <p>
-                If this Policy should be reviewed when it is due to expire (i.e. in order to renew it) or at any other time (for example if the motion stipulates its own timeframe), then tick the review flag.
-            </p>
-        </div>
-        <div class="span8">
-            <?php
-                echo $form->text('raw_tags', 'Tags (comma separated)', ($edit ? $policy->tags_raw() : null), array('class'=>'input-block-level'));
-                echo $form->checkbox('review_flag', 'Flag for Review');
-            ?>
-        </div>
-    </fieldset>
-    
     <div class="form-actions">
         <?php echo $form->submit_primary('Save'); ?>
         <button class="btn btn-danger" type="reset">Cancel</button>
     </div>
     <?php echo $form->close(); ?>
 @endsection
-
-<?php Section::start('scripts'); ?>
-<script language="javascript" type="text/javascript">
-    require(['lib/jquery/plugins/tagsinput'], function() {
-        $('#field_raw_tags').tagsInput({
-            autocomplete_url: '/tags.json/{query}',
-            autocomplete: {property: 'name'}
-        });
-    });
-</script>
-<?php Section::stop(); ?>

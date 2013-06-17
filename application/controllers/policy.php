@@ -143,8 +143,6 @@ class Policy_Controller extends Base_Controller {
         $policy->fill($data);
         $policy->save();
 
-        $policy->saveTags(explode(',',Input::get('raw_tags')));
-
         Session::flash('alert_success', 'Changes saved.');
 
         return $this->get_edit($id);

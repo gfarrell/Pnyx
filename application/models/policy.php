@@ -119,38 +119,10 @@ EOT
         $policy = Policy::create($data_extract);
 
         if($policy) {
-            // Process tags
-            $policy->saveTags(explode(',', $data['raw_tags']));
             return $policy->id;
         } else {
             return false;
         }
-    }
-
-    public function saveTags($tags) {
-        // Deal with tags
-        // First create all non-existent tags
-        Tag::createNonexistent($tags);
-        // Now get all the tags specified
-        $spec_tags = Tag::where_in('name', $tags)->get('id');
-        $tag_ids = array_map(function($t) { return $t->id; }, $spec_tags);
-        // Sync!
-        $this->tags()->sync($tag_ids);
-    }
-
-    public function tags() {
-        return $this->has_many_and_belongs_to('Tag');
-    }
-
-    public function tags_raw() {
-        $tags = $this->tags()->get();
-        $names = array();
-
-        foreach($tags as $t) {
-            array_push($names, $t->name);
-        }
-
-        return implode(',', $names);
     }
 
     public function didPass() {
