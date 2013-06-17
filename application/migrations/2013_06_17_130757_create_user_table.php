@@ -12,13 +12,17 @@ class Create_User_Table {
 		// Create users table
 		Schema::create('users', function($table) {
 			$table->increments('id');
-			$table->string('crsid', 25);	
+			$table->string('crsid', 25);
+
+			$table->timestamps();
 		});
 
 		// Create user groups table
 		Schema::create('user_groups', function($table){
 			$table->increments('id');
 			$table->string('name', 50)->unique();
+
+			$table->timestamps();
 		});
 
 		// Pivot table
