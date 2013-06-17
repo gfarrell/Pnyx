@@ -90,7 +90,7 @@ EOT
     }
 
     public static function cleanData($data) {
-        $direct_fields = array('title','date','notes','believes','resolves','votes_for','votes_against','votes_abstain','review_flag');
+        $direct_fields = array('title','date','notes','believes','resolves','votes_for','votes_against','votes_abstain');
 
         $new_data = Set::get($data, $direct_fields);
 
