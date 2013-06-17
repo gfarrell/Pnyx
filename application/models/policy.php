@@ -100,12 +100,8 @@ EOT
         // Deal with prop / sec
         $people = Set::get($data, array('proposed','seconded'));
         foreach($people as $type => $p) {
-            if(User::validateCrsid($p)) {   // Only lookup if it is a CRSID
-                $u = User::lookup($p);
-                $new_data[$type] = is_null($u) ? $p : $u['name'];
-            } else {
-                $new_data[$type] = $p;
-            }
+            $u = Ravenly\Models\User::lookup($p);
+            $new_data[$type] = is_null($u) ? $p : $u['name'];
         }
 
         return $new_data;
