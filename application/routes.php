@@ -3,11 +3,11 @@
 use Ravenly\Models\User;
 use Ravenly\Models\UserGroup;
 
-Route::get('/', function()
+Route::get('/', array('before'=>'raven', function()
 {
 	return View::make('home.index')
                 ->with('latest_policies', Policy::order_by('date', 'desc')->take(5)->get());
-});
+}));
 
 Route::get('/admin', array('before'=>'raven', function() {
     if(!Ravenly::user()->inGroup('admin')) {
