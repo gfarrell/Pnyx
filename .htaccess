@@ -2,7 +2,3 @@ RewriteEngine On
 RewriteBase / 
 RewriteCond %{REQUEST_URI} !^www
 RewriteRule ^(.*)$ /www/$1 [L]
-
-<DirectoryMatch .*\.git/.*>
-    Deny From All
-</DirectoryMatch>
