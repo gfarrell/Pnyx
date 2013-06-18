@@ -23,7 +23,7 @@
 
 $environments = array(
 	'local'  => array('pnyx.dev'),
-	'srcf' 	 => array('http://pnyx.kcsu.org.uk')
+	'srcf' 	 => array('pnyx.kcsu.org.uk')
 );
 
 // --------------------------------------------------------------
