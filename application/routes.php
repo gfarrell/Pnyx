@@ -27,6 +27,7 @@ Route::get('/admin', array('before'=>'raven', function() {
 }));
 
 Route::controller('policy');
+Route::controller('user');
 
 /*
 |--------------------------------------------------------------------------
