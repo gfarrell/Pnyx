@@ -6,16 +6,15 @@
 		<p>
 			Welcome to Pnyx, the home of KCSU Policy. Below is a list of the latest Policy, as well as the Policies which are about to expire (this academic year).
 		</p>
-		
-		<p>
-			To find out more about the relationship between KCSU and Policy, please click {{ HTML::link('/help/policy', 'here') }}.
-		</p>
-		
-		<p>
-			To find out more about Pnyx (including why it's called &ldquo;Pnyx&rdquo;), please click {{HTML::link('/help/pnyx', 'here') }}.
 	</div>
-	<div class="span12">
-		<h2>Latest Policy</h2>
-		<?php echo render('policy.partials.list', array('policies'=>$latest_policies)); ?>
+	<div class="row">
+		<div class="span6">
+			<h2>Latest Policy</h2>
+			@render('policy.partials.list', array('policies'=>$latest_policies))
+		</div>
+		<div class="span6">
+			<h2>Expiring Policy</h2>
+			@render('policy.partials.list', array('policies'=>$expiring_policies))
+		</div>
 	</div>
 @endsection
