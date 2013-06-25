@@ -5,8 +5,19 @@ use Ravenly\Models\UserGroup;
 
 Route::get('/', array('before'=>'raven', function()
 {
+    // all policy created between october four years previously and three years previously will expire this year in october
+    $now = array('m'=>intval(date('m')), 'y'=>intval(date('Y')));
+    // find low and high years
+    $low_y = $now['y'] - Config::get('pnyx.policy_lifetime');
+    if($now['m'] > 10) {
+        $low_y = $low_y + 1;
+    }
+
 	return View::make('home.index')
-                ->with('latest_policies', Policy::order_by('date', 'desc')->take(5)->get());
+                ->with(array(
+                    'latest_policies'   => Policy::order_by('date', 'desc')->take(5)->get(),
+                    'expiring_policies' => Policy::order_by('date', 'desc')->where_between('date', $low_y.'-10-01', ($low_y+1).'-10-01')->get()
+                ));
 }));
 
 Route::get('/admin', array('before'=>'raven', function() {
