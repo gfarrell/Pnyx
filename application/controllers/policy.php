@@ -47,7 +47,9 @@ class Policy_Controller extends Base_Controller {
                             })
                             ->where('votes_against', '!=', 'm')
                             ->where('date', '>', PNYX_POLICY_UPPER_DATE) // don't need to transform dates
+                            ->where_null('rescinded_by')
                             ->get();
+
         return Request::ajax() ? Response::eloquent($policies) : View::make('policy.current')->with('policies', $policies);
     }
 
