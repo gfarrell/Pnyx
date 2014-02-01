@@ -6,6 +6,7 @@
  */
 $passed = $policy->didPass();
 $current = $policy->isCurrent();
+$rescinded = $policy->isRescinded();
 
 $labels = array(
     'passed'    =>  array(
@@ -13,7 +14,7 @@ $labels = array(
             'label' => array(true => 'passed', false => 'failed'), 
     ),
     'current'   =>  array(
-            'test'  => $policy->isCurrent(),
+            'test'  => $current && !$rescinded,
             'label' => array(true => 'current', false => 'expired')
     )
 );
