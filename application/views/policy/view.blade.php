@@ -74,4 +74,16 @@
 
 The vote, taken on {{ date('l, jS F, Y', strtotime($policy->date)) }}, was: {{ $vote }}. <strong>The motion {{ $policy->didPass() ? 'passed' : 'failed' }}</strong>.
 
+@if($policy->relatesTo()->count() > 0)
+<h3>Related Policy</h3>
+<ul>
+@foreach($policy->relatesTo as $r)
+    <li>
+        (<span class="text-{{ ($r->pivot->rescinds ? 'warning">Rescinds' : 'success">Renews') }}</span>) 
+        @render('policy.partials.link', array("policy" => $r))
+    </li>
+@endforeach
+</ul>
+@endif
+
 @endsection
