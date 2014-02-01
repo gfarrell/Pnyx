@@ -5,7 +5,7 @@
     Section::start('content');
 ?>
 
-<h1>All motions</h1>
+<h1>All motions {{ HTML::link('policy/current', 'see current policy', array('class'=>'btn btn-small')); }}</h1>
 <table class="table table-striped table-hover">
     <thead>
         <tr>

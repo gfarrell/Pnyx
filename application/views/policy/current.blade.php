@@ -4,7 +4,7 @@
     Section::append('page_title', 'Current Policy');
     Section::start('content');
 ?>
-<h1>KCSU Current Policy</h1>
+<h1>Current Policy {{ HTML::link('policy/index', 'see all policy', array('class'=>'btn btn-small')); }}</h1>
 <table class="table table-striped table-hover">
     <thead>
         <tr>
