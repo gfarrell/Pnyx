@@ -114,10 +114,26 @@ EOT
         // Save data fields
         $policy = Policy::create($data_extract);
 
+        // Save relationships
+        $policy->savePolicyRelationships($data);
+
         if($policy) {
             return $policy->id;
         } else {
             return false;
+        }
+    }
+
+    private function savePolicyRelationships($data) {
+        // TODO: implement many-to-many relationships
+        if(isset($data['child_id']) && intval($data['child_id']) > 0) {
+            $rels = DB::table('policy_policy');
+            $rels->where('parent_id', '=', $this->id)->delete();
+            $rels->insert(array(
+                'parent_id' => $this->id,
+                'child_id'  => intval($data['child_id']),
+                'rescinds'  => $data['rescinds'] == 'true' || $data['rescinds'] === true
+            ));
         }
     }
 
@@ -149,6 +165,13 @@ EOT
     public function isCurrent() {
         $now = time();
         return ($now < $this->expires());
+    }
+
+    public function isRescinded() {
+        return DB::table('policy_policy')
+                ->where('child_id', '=', $this->id)
+                ->where('rescinds', '=', true)
+                ->count() > 0;
     }
 
     public function expires() {
