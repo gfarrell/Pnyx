@@ -31,6 +31,9 @@
     @if($policy->didPass())
     <dt>Policy Expire{{ $policy->isCurrent() ? 's' : 'd' }}</dt><dd>{{ date('F, Y', $policy->expires()) }}</dd>
     @endif
+    @if($policy->isRescinded())
+    <dt class="text-warning">Rescinded on</dt><dd class="text-warning">{{ date('jS M Y', strtotime($policy->relatedTo()->where('rescinds', '=', 1)->first()->date)); }}
+    @endif
 </dl>
 
 <h3>KCSU Notes</h3>
