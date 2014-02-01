@@ -2,6 +2,13 @@
 class Policy extends mBase {
     public static $timestamps = false;
 
+    public function relatedTo() {
+        return $this->has_many_and_belongs_to('Policy', 'policy_policy', 'child_id', 'parent_id')->with('rescinds');
+    }
+
+    public function relatesTo() {
+        return $this->has_many_and_belongs_to('Policy', 'policy_policy', 'parent_id', 'child_id')->with('rescinds');
+    }
 
     public function afterSave() {
         Policy::index($this);
@@ -161,14 +168,6 @@ EOT
     public function isCurrent() {
         $now = time();
         return ($now < $this->expires());
-    }
-
-    public function relatedTo() {
-        $this->has_and_belongs_to('Policy', 'policy_policy', 'child_id')->with('rescinds');
-    }
-
-    public function relatesTo() {
-        $this->has_and_belongs_to('Policy', 'policy_policy', 'parent_id')->with('rescinds');
     }
 
     public function isRescinded() {
