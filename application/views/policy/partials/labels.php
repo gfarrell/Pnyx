@@ -15,7 +15,7 @@ $labels = array(
     ),
     'current'   =>  array(
             'test'  => $current && !$rescinded,
-            'label' => array(true => 'current', false => 'expired')
+            'label' => array(true => 'current', false => ($rescinded ? 'rescinded' : 'expired'))
     )
 );
 
