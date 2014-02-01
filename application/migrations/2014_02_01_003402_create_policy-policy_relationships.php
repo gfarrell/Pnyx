@@ -10,22 +10,13 @@ class Create_Policy_Policy_Relationships {
 	public function up()
 	{
 		// So policies need to be related to each other
-		Schema::create('policy_policy', function($table) {
-			$table->engine = 'InnoDB';
-
-			$table->increments('id');
-			
-			$table->integer('parent_id')->unsigned();
-			$table->integer('child_id')->unsigned();
-
-			// Rescinds specifies the action:
-			// 	if true, then parent rescinds child
-			// 	if false, then parent renews child
-			$table->boolean('rescinds')->default(false);
+		Schema::table('policies', function($table) {
+			$table->integer('rescinded_by')->unsigned()->nullable()->default(null);
+			$table->integer('renewed_by')->unsigned()->nullable()->default(null);
 
 			// And now the foreign keys
-			$table->foreign('parent_id')->references('id')->on('policies');
-			$table->foreign('child_id')->references('id')->on('policies');
+			$table->foreign('rescinded_by')->references('id')->on('policies');
+			$table->foreign('renewed_by')->references('id')->on('policies');
 		});
 	}
 
@@ -36,7 +27,10 @@ class Create_Policy_Policy_Relationships {
 	 */
 	public function down()
 	{
-		Schema::drop('policy_policy');
+		Schema::table('policies', function($table) {
+			$table->drop_column('rescinded_by');
+			$table->drop_column('renewed_by');
+		});
 	}
 
 }

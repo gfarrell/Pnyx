@@ -2,12 +2,24 @@
 class Policy extends mBase {
     public static $timestamps = false;
 
-    public function relatedTo() {
-        return $this->has_many_and_belongs_to('Policy', 'policy_policy', 'child_id', 'parent_id')->with('rescinds');
+    public function rescindedBy() {
+        return $this->belongs_to('Policy', 'rescinded_by');
+    }
+
+    public function renewedBy() {
+        return $this->belongs_to('Policy', 'renewed_by');
+    }
+
+    public function rescinds() {
+        return $this->has_many('Policy', 'rescinded_by');
+    }
+
+    public function renews() {
+        return $this->has_many('Policy', 'renewed_by');
     }
 
     public function relatesTo() {
-        return $this->has_many_and_belongs_to('Policy', 'policy_policy', 'parent_id', 'child_id')->with('rescinds');
+        return $this->has_many('Policy', 'rescinded_by')->or_where('renewed_by', '=', $this->id);
     }
 
     public function afterSave() {
@@ -132,13 +144,20 @@ EOT
     }
 
     public function savePolicyRelationships($data) {
-        // TODO: implement many-to-many relationships (ie an array)
+        // TODO: implement one-to-many relationships (ie an array)
         if(isset($data['child_id']) && intval($data['child_id']) > 0) {
-            $this->relatesTo()->delete();
-            Log::info($data['rescinds']);
-            $this->relatesTo()->attach(intval($data['child_id']), array(
-                'rescinds'  => $data['rescinds']
-            ));
+            // clear previous
+            $this->renews()->first()->fill(array('renewed_by'=>null))->save();
+            $this->rescinds()->first()->fill(array('rescinded_by'=>null))->save();
+
+            // set
+            $p = Policy::find(intval($data['child_id']));
+            if($data['child_action'] == 'renew') {
+                $p->renewed_by = $this->id;
+            } else if($data['child_action'] == 'rescind') {
+                $p->rescinded_by = $this->id;
+            }
+            $p->save();
         }
     }
 
@@ -173,26 +192,11 @@ EOT
     }
 
     public function isRescinded() {
-        $rescinders = $this->relatedTo()->where('rescinds', '=', true)->get();
-
-        if(count($rescinders) > 0) {
-            foreach($rescinders as $rescinder) {
-                if($rescinder->didPass()) { return true; }
-            }
-        }
-
-        return false;
+        return !is_null($this->rescinded_by) && $this->rescindedBy->didPass();
     }
 
     public function wasRenewed() {
-        $renew = $this->relatedTo()->where('rescinds', '=', false)->get();
-        if(count($renew) > 0) {
-            foreach($renew as $r) {
-                if($r->didPass()) { return true; }
-            }
-        }
-
-        return false;
+        return !is_null($this->renewed_by) && $this->renewedBy->didPass();
     }
 
     public function expires() {
