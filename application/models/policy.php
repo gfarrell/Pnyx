@@ -134,8 +134,10 @@ EOT
     public function savePolicyRelationships($data) {
         // TODO: implement many-to-many relationships (ie an array)
         if(isset($data['child_id']) && intval($data['child_id']) > 0) {
+            $this->relatesTo()->delete();
+            Log::info($data['rescinds']);
             $this->relatesTo()->attach(intval($data['child_id']), array(
-                'rescinds'  => ($data['rescinds'] == 'true' || $data['rescinds'] === true) ? 0 : 1
+                'rescinds'  => $data['rescinds']
             ));
         }
     }
@@ -176,6 +178,17 @@ EOT
         if(count($rescinders) > 0) {
             foreach($rescinders as $rescinder) {
                 if($rescinder->didPass()) { return true; }
+            }
+        }
+
+        return false;
+    }
+
+    public function wasRenewed() {
+        $renew = $this->relatedTo()->where('rescinds', '=', false)->get();
+        if(count($renew) > 0) {
+            foreach($renew as $r) {
+                if($r->didPass()) { return true; }
             }
         }
 
