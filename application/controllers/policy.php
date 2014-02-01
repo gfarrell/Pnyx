@@ -139,9 +139,10 @@ class Policy_Controller extends Base_Controller {
             return Redirect::to('policy/add')->with('alert_error', 'No such Policy document exists with id '.$id.'. You can create one below.')->with_input();
         }
 
-        $data = Policy::cleanData(Input::all());
-        $policy->fill($data);
+        $data_extract = Policy::cleanData(Input::all());
+        $policy->fill($data_extract);
         $policy->save();
+        $policy->savePolicyRelationships(Input::all());
 
         Session::flash('alert_success', 'Changes saved.');
 
