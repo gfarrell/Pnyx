@@ -32,10 +32,10 @@
     <dt>Policy Expire{{ $policy->isCurrent() ? 's' : 'd' }}</dt><dd>{{ date('F, Y', $policy->expires()) }}</dd>
     @endif
     @if($policy->isRescinded())
-    <dt class="text-warning">Rescinded on</dt><dd class="text-warning">{{ date('jS M Y', strtotime($policy->relatedTo()->where('rescinds', '=', 1)->first()->date)); }}
+    <dt class="text-warning">Rescinded on</dt><dd class="text-warning">{{ date('jS M Y', strtotime($policy->rescindedBy->date)); }} by @render('policy.partials.link', array('policy'=>$policy->rescindedBy))</dd>
     @endif
     @if($policy->wasRenewed())
-    <dt class="text-info">Renewed on</dt><dd class="text-info">{{ date('jS M Y', strtotime($policy->relatedTo()->where('rescinds', '=', 0)->first()->date)); }}
+    <dt class="text-info">Renewed on</dt><dd class="text-info">{{ date('jS M Y', strtotime($policy->renewedBy->date)); }} by @render('policy.partials.link', array('policy'=>$policy->renewedBy))</dd>
     @endif
 </dl>
 
@@ -79,7 +79,7 @@ The vote, taken on {{ date('l, jS F, Y', strtotime($policy->date)) }}, was: {{ $
 <ul>
 @foreach($policy->relatesTo as $r)
     <li>
-        (<span class="text-{{ ($r->pivot->rescinds ? 'warning">Rescinds' : 'success">Renews') }}</span>) 
+        (<span class="text-{{ ($r->rescinded_by == $policy->id ? 'warning">Rescinds' : 'success">Renews') }}</span>) 
         @render('policy.partials.link', array("policy" => $r))
     </li>
 @endforeach

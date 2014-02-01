@@ -105,7 +105,7 @@
         </div>
         <div class="span8">
             <div class="controls input-append">
-            <?php echo Form::text('child_id', null, array('class'=>'span1', 'placholder'=>'id')) . Form::select('rescinds', array(false=>'renew', true=>'rescind'), null); ?>
+            <?php echo Form::text('child_id', null, array('class'=>'span1', 'placholder'=>'id')) . Form::select('child_action', array('renew'=>'renew', 'rescind'=>'rescind'), null); ?>
             </div>
         </div>
     </fieldset>
