@@ -131,7 +131,7 @@ EOT
         }
     }
 
-    private function savePolicyRelationships($data) {
+    public function savePolicyRelationships($data) {
         // TODO: implement many-to-many relationships (ie an array)
         if(isset($data['child_id']) && intval($data['child_id']) > 0) {
             $this->relatesTo()->attach(intval($data['child_id']), array(
