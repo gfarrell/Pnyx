@@ -34,6 +34,9 @@
     @if($policy->isRescinded())
     <dt class="text-warning">Rescinded on</dt><dd class="text-warning">{{ date('jS M Y', strtotime($policy->relatedTo()->where('rescinds', '=', 1)->first()->date)); }}
     @endif
+    @if($policy->wasRenewed())
+    <dt class="text-info">Renewed on</dt><dd class="text-info">{{ date('jS M Y', strtotime($policy->relatedTo()->where('rescinds', '=', 0)->first()->date)); }}
+    @endif
 </dl>
 
 <h3>KCSU Notes</h3>
