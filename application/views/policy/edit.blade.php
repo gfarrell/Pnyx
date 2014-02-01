@@ -96,6 +96,19 @@
             </div>
         </div>
     </fieldset>
+
+    <fieldset class="row">
+        <legend>Relation to other policies</legend>
+        <div class="span4 muted">
+            <p>Here we list any relationships to other policies. Such relationships can either be that this policy RESCINDS prior policy or that it RENEWS prior policy.</p>
+            <p>You will need the ID of the policy that is being rescinded.</p>
+        </div>
+        <div class="span8">
+            <div class="controls input-append">
+            <?php echo Form::text('child_id', null, array('class'=>'span1', 'placholder'=>'id')) . Form::select('rescinds', array(false=>'renew', true=>'rescind'), null); ?>
+            </div>
+        </div>
+    </fieldset>
     
     <div class="form-actions">
         <?php echo $form->submit_primary('Save'); ?>
