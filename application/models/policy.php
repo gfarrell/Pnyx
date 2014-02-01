@@ -125,14 +125,10 @@ EOT
     }
 
     private function savePolicyRelationships($data) {
-        // TODO: implement many-to-many relationships
+        // TODO: implement many-to-many relationships (ie an array)
         if(isset($data['child_id']) && intval($data['child_id']) > 0) {
-            $rels = DB::table('policy_policy');
-            $rels->where('parent_id', '=', $this->id)->delete();
-            $rels->insert(array(
-                'parent_id' => $this->id,
-                'child_id'  => intval($data['child_id']),
-                'rescinds'  => $data['rescinds'] == 'true' || $data['rescinds'] === true
+            $this->relatesTo()->attach(intval($data['child_id']), array(
+                'rescinds'  => ($data['rescinds'] == 'true' || $data['rescinds'] === true) ? 0 : 1
             ));
         }
     }
@@ -167,11 +163,24 @@ EOT
         return ($now < $this->expires());
     }
 
+    public function relatedTo() {
+        $this->has_and_belongs_to('Policy', 'policy_policy', 'child_id')->with('rescinds');
+    }
+
+    public function relatesTo() {
+        $this->has_and_belongs_to('Policy', 'policy_policy', 'parent_id')->with('rescinds');
+    }
+
     public function isRescinded() {
-        return DB::table('policy_policy')
-                ->where('child_id', '=', $this->id)
-                ->where('rescinds', '=', true)
-                ->count() > 0;
+        $rescinders = $this->relatedTo()->where('rescinds', '=', true)->get();
+
+        if(count($rescinders) > 0) {
+            foreach($rescinders as $rescinder) {
+                if($rescinder->didPass()) { return true; }
+            }
+        }
+
+        return false;
     }
 
     public function expires() {
