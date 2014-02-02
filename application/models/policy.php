@@ -147,8 +147,8 @@ EOT
         // TODO: implement one-to-many relationships (ie an array)
         if(isset($data['child_id']) && intval($data['child_id']) > 0) {
             // clear previous
-            $this->renews()->first()->fill(array('renewed_by'=>null))->save();
-            $this->rescinds()->first()->fill(array('rescinded_by'=>null))->save();
+            DB::table('policies')->where('rescinded_by', '=', $this->id)->update(array('rescinded_by', null));
+            DB::table('policies')->where('renewed_by', '=', $this->id)->update(array('renewed_by', null));
 
             // set
             $p = Policy::find(intval($data['child_id']));
