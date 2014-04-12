@@ -1,5 +1,5 @@
 <?php
-require('~/.config/app.pnyx.php');
+require(basename(__FILE__).'../../../../../config/pnyx.php');
 return array(
     'connections' => array(
         'mysql' => array(
