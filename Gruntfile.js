@@ -26,7 +26,7 @@ module.exports = function(Grunt) {
                     cleancss: false
                 },
                 files: {
-                    'www/dist/styles.dev.css': 'www/less/styles.less'
+                    'www/dist/main.dev.css': 'www/css/main.less'
                 }
             },
             production: {
@@ -36,7 +36,7 @@ module.exports = function(Grunt) {
                     cleancss: true
                 },
                 files: {
-                    'www/dist/styles.css': 'www/less/styles.less'
+                    'www/dist/main.min.css': 'www/css/main.less'
                 }
             }
         },
@@ -47,12 +47,12 @@ module.exports = function(Grunt) {
         autoprefixer: {
             dev: {
                 files: {
-                    'www/dist/styles.dev.css': 'www/dist/styles.dev.css'
+                    'www/dist/main.dev.css': 'www/dist/main.dev.css'
                 }
             },
             production: {
                 files: {
-                    'www/dist/styles.css': 'www/dist/styles.css'
+                    'www/dist/main.min.css': 'www/dist/main.min.css'
                 }
             }
         },

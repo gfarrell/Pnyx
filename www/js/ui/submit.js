@@ -1,7 +1,8 @@
+/* global define */
 define(
-    ['jquery', 'underscore', 'lib/bootbox/bootbox'],
-    function(jQuery, _, Bootbox) {
-        "use strict";
+    ['jquery', 'lodash', 'bootbox'],
+    function($, _, Bootbox) {
+        'use strict';
 
         var submit = '[data-submit]',
             Submitter = function(e) {
@@ -32,7 +33,7 @@ define(
 
         // NEED THIS TO BE AUTOMATIC
         $('body').on('click.submit.data-api', submit, function(e) {
-            var s = new Submitter(e);
+            (new Submitter(e));
         });
     }
 );
