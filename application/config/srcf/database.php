@@ -1,12 +1,13 @@
 <?php
+require('~/.config/app.pnyx.php');
 return array(
     'connections' => array(
         'mysql' => array(
             'driver'   => 'mysql',
             'host'     => 'localhost',
-            'database' => 'kcsu/pnyx',
-            'username' => 'kcsu',
-            'password' => '--enter-password-here--',
+            'database' => $PNYX_DB_DB,
+            'username' => $PNYX_DB_USER,
+            'password' => $PNYX_DB_PASS,
             'charset'  => 'utf8',
             'prefix'   => '',
         )
