@@ -20,22 +20,7 @@ Route::get('/', array('before'=>'raven', function()
                 ));
 }));
 
-Route::get('/admin', array('before'=>'raven', function() {
-    if(!Ravenly::user()->inGroup('admin')) {
-        return Response::error(403);
-    }
-
-    $groups = UserGroup::all();
-    $groups_list = array();
-    foreach($groups as $group) {
-        $groups_list[$group->id] = $group->name;
-    }
-    return View::make('home.admin')
-            ->with('users', User::all())
-            ->with('groups', $groups)
-            ->with('groups_list', $groups_list)
-            ->with('index_weights', DB::table('index_weights')->get());
-}));
+Route::controller('admin');
 
 Route::controller('policy');
 Route::controller('user');
