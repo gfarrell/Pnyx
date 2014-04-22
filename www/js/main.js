@@ -35,24 +35,28 @@
     @package js
     @author  Gideon Farrell <me@gideonfarrell.co.uk>
  */
-
-
+/* global require */
 
 // Basic configuration
 require.config({
     baseUrl: '/js',
     paths: {
-        'underscore': 'lib/underscore/underscore',
-        'jquery':     'lib/jquery/jquery-1.8.3',
-        'bootstrap':  'lib/bootstrap'
+        'lodash':     '../lib/lodash/dist/lodash',
+        'underscore': '../lib/underscore/underscore',
+        'jquery':     '../lib/jquery/jquery',
+        'bs':  '../lib/bootstrap/js',
+        'bootbox':    '../lib/bootbox/bootbox'
+    },
+    map: {
+        'underscore': 'lodash'
     }
 });
 
 // Initialise application
 require(
     [
-        'jquery', 'underscore',
-        'bootstrap/dropdown', 'bootstrap/alert', 'bootstrap/collapse',
+        'jquery', 'lodash',
+        'bs/bootstrap-dropdown', 'bs/bootstrap-alert', 'bs/bootstrap-collapse',
         'ui/submit'
     ],
     function() {

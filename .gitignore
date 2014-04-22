@@ -1,2 +1,5 @@
-/www/css/*.css
-/www/css/*/*.css
+www/css/*.css
+www/css/*/*.css
+www/lib
+www/dist
+node_modules

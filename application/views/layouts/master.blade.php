@@ -8,10 +8,11 @@
         <meta name="viewport" content="width=device-width">
 
         <!-- CSS -->
-        <link rel="stylesheet" language="text/css" href="/css/main.css" />
-        
-        <!-- Require.js -->
-        <script language="javascript" src="/js/lib/require/require.js"></script>
+        @if(Request::env() == 'srcf')
+        <link rel="stylesheet" language="text/css" href="/dist/main.min.css" />
+        @else
+        <link rel="stylesheet" language="text/css" href="/dist/main.dev.css" />
+        @endif
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -46,7 +47,11 @@
         </div>
 
         <!-- Run main.js -->
-        <script language="javascript" type="text/javascript" src="/js/main.js"></script>
+        @if(Request::env() == 'srcf')
+        <script language="javascript" type="text/javascript" src="/lib/requirejs/require.js" data-main="/dist/main.js"></script>
+        @else
+        <script language="javascript" type="text/javascript" src="/lib/requirejs/require.js" data-main="/js/main.js"></script>
+        @endif
 
         <!-- Run custom scripts -->
         @yield('scripts')
