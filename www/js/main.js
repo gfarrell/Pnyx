@@ -39,12 +39,12 @@
 
 // Basic configuration
 require.config({
-    baseUrl: 'js',
+    baseUrl: '/js',
     paths: {
         'lodash':     '../lib/lodash/dist/lodash',
         'underscore': '../lib/underscore/underscore',
-        'jquery':     '../lib/jquery/dist/jquery',
-        'bootstrap':  '../lib/bootstrap/js',
+        'jquery':     '../lib/jquery/jquery',
+        'bs':  '../lib/bootstrap/js',
         'bootbox':    '../lib/bootbox/bootbox'
     },
     map: {
@@ -56,7 +56,7 @@ require.config({
 require(
     [
         'jquery', 'lodash',
-        'bootstrap/dropdown', 'bootstrap/alert', 'bootstrap/collapse',
+        'bs/bootstrap-dropdown', 'bs/bootstrap-alert', 'bs/bootstrap-collapse',
         'ui/submit'
     ],
     function() {

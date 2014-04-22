@@ -48,9 +48,9 @@
 
         <!-- Run main.js -->
         @if(Request::env() == 'srcf')
-        <script language="javascript" type="text/javascript" src="lib/requirejs/require.js" data-main="/dist/main.js"></script>
+        <script language="javascript" type="text/javascript" src="/lib/requirejs/require.js" data-main="/dist/main.js"></script>
         @else
-        <script language="javascript" type="text/javascript" src="lib/requirejs/require.js" data-main="/js/main.js"></script>
+        <script language="javascript" type="text/javascript" src="/lib/requirejs/require.js" data-main="/js/main.js"></script>
         @endif
 
         <!-- Run custom scripts -->
